@@ -1,0 +1,19 @@
+{
+  "name": "pi-videogames-main",
+  "version": "1.0.0",
+  "description": "Proyecto individual de temática videogames del bootcamp soy henry",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marianovelarde/P.I-VIDEOGAMES.git"
+  },
+  "author": "mariano velarde",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Marianovelarde/P.I-VIDEOGAMES/issues"
+  },
+  "homepage": "https://github.com/Marianovelarde/P.I-VIDEOGAMES#readme"
+}
