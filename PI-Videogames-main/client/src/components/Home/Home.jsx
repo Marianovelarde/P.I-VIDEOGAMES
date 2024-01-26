@@ -5,6 +5,8 @@ import { getAllVideogames } from '../../Redux/actions'
 
 import Cards from '../Cards/Cards'
 import Pagination from '../Pagination/Pagination'
+import SearchBar from '../SearchBar/SearchBar'
+import FiltersAndOrder from '../FiltersAndOrder/FiltersAndOrder'
 
 const Home = (props) => {
 
@@ -41,6 +43,9 @@ props.getAllVideogames()
   // }, [])
   return (
     <div> 
+      <SearchBar/>
+      <FiltersAndOrder
+      page={setCurrentPage}/>
       <Pagination
       currentPage={currentPage}
       videogamesPerPage={videogamesPerPage}

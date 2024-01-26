@@ -25,7 +25,8 @@ const getDataApi = async () => {
                     id: game.id,
                     name: game.name,             
                     image: game.background_image,
-                    genres
+                    genres,
+                    rating: game.rating
                 };
             });
 
