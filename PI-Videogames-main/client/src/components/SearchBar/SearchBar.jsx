@@ -25,7 +25,7 @@ const SearchBar = (props) => {
 
     <div>
         <header>
-            <h1>Videogames P.I soy Henry.</h1>
+           
 
             <form onSubmit={handleSubmit}>
                 <input 

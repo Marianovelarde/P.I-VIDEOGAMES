@@ -1,0 +1,54 @@
+.containerCard {
+    display: display;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-sizing: border-box;
+    max-height: 300px;
+    max-width: 300px;
+    flex-direction: column;
+    padding: 100px;
+    margin-left: 25px;
+    margin-bottom: 25px;
+    text-align: center;
+    background-color: rgba(8, 7, 10, 0);
+
+    overflow: hidden;
+    
+    
+    
+}
+.containerCard img {
+    display: flex;
+    position: relative;
+    top: -50px;
+    max-height: 100px;
+    margin-right: 20px;
+    margin-left: -10;
+    max-width: 100%;
+    transform: scale(2.5, 1.9);
+    background-color: rgba(255, 255, 255, 0.432);
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 1px solid black;
+  }
+
+  .textCard {
+    
+  }
+  .textCard strong {
+    margin-top: 5px;
+    margin-right: -50px;
+  }
+
+  .containerCard button {
+    text-align: center;
+    
+    margin-left: 50px;
+    border-radius: 5px solid white;
+  }
+  .containerCard button:hover {
+    background-color: azure;
+    cursor: pointer;
+    border: 1px solid black;
+  
+  }

@@ -5,8 +5,9 @@ import { getAllVideogames } from '../../Redux/actions'
 
 import Cards from '../Cards/Cards'
 import Pagination from '../Pagination/Pagination'
-import SearchBar from '../SearchBar/SearchBar'
+import NavBar from '../../Views/NavBar/NavBar'
 import FiltersAndOrder from '../FiltersAndOrder/FiltersAndOrder'
+
 
 const Home = (props) => {
 
@@ -43,15 +44,18 @@ props.getAllVideogames()
   // }, [])
   return (
     <div> 
-      <SearchBar/>
+      <NavBar/>
+   
       <FiltersAndOrder
       page={setCurrentPage}/>
+
       <Pagination
       currentPage={currentPage}
       videogamesPerPage={videogamesPerPage}
       totalVideogames={videogames.length}
       paginate={paginate}
       />
+      
       <Cards videogames={currentVideogames}/>
     </div>
   )
@@ -63,5 +67,5 @@ const mapDispatchToProps = {
   getAllVideogames
 } 
 
-export default(connect)(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
 

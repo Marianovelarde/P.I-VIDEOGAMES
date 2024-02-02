@@ -1,19 +1,22 @@
 import React from 'react'
 import Card from '../Card/Card'
+import styles from './cards.module.css'
 const Cards = (props) => {
 
     const {videogames} = props
 
 
   return (
-    <div>
+    <div className={styles.cardsContainer}>
         {videogames.map((vg) => {
             return (
                 <Card
                 key={vg.id}
+                id={vg.id}
                 name={vg.name}
                 image={vg.image}
-                genres={vg.genres}  
+                genres={vg.genres}
+                rating={vg.rating}  
                 />
             )
         })}

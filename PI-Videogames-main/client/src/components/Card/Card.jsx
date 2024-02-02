@@ -1,18 +1,32 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router';
+import {Link } from 'react-router-dom'
+import styles from './card.module.css'
 const Card = (props) => {
     const { id, name, description, released, image, genres } = props;
 
+    
+    
+    const navigate = useNavigate()
+    
+    const handleClick = () => {
+        navigate(`/videogames/${id}`)
+    }
     return (
-        <div>
-            <img src={image} alt={name} />
-            <h2>{name}</h2>
-            <div>
-                <h2>Genres:</h2>
+        <div className={styles.containerCard}>
+            <div className={styles.imgCard}>
+                <Link to={`/videogames/${id}`}>
+                <img src={image} alt={name} />
+                </Link>
+            </div>
+            <div className={styles.textCard}>
+                <strong>{name}</strong>
                 {genres.map((genre, index) => (
-                        <h3 key={index}>{genre.name}{index !== genres.length - 1 && ', '}</h3>
+                        <p key={index}>{genre.name}{index !== genres.length - 1 && ','}</p>
                     ))}
             </div>
+
+      
         </div>
     );
 };

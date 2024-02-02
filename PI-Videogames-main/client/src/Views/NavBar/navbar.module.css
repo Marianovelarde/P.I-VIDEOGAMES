@@ -1,0 +1,11 @@
+.containerNav {
+display: flex;
+justify-content: space-around;
+}
+.containerNav h1 {
+    font-family: 'Chakra Petch', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Rubik', sans-serif;
+    color:white;
+    text-shadow: 4px 4px 4px rgb(243, 29, 243);
+}

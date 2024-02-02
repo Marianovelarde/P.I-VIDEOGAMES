@@ -1,6 +1,12 @@
 import  { useEffect, useState } from 'react'
-import { getGenres, filterByGenres, getAllVideogames,orderBy } from '../../Redux/actions'
+import { 
+    getAllVideogames,
+    getGenres, 
+    filterByGenres, 
+    orderBy,
+    filterBySource } from '../../Redux/actions'
 import { connect } from 'react-redux'
+import styles from '../FiltersAndOrder/styledComponent.module.css'
 
 const FiltersAndOrder = (props) => {
 
@@ -12,9 +18,11 @@ const {page} = props
         filterBySource: 'all',
         orderBy: 'orderNone'
     })
+    console.log('Estado actual de filterBySource:', select.filterBySource);
 
     useEffect(()=>{
         props.getGenres()
+        props.filterBySource()
     },[])
 
     const handleFilterGender = (e) => {
@@ -27,11 +35,20 @@ const {page} = props
         props.filterByGenres(value)
         page(1)
     }
+    const handleSource = (e) => {
+        const {value} = e.target
+        console.log(value);
+        setSelect({
+          ...select,
+          filterBySource: value,
+        })
+       
+        page(1)
+        props.filterBySource(value)
+    }
 
     const handleOrder = async (e) => {
-        const { value } = e.target;
-        console.log(value);
-    
+        const { value } = e.target;    
         setSelect({
             ...select,
             orderBy: value
@@ -51,8 +68,8 @@ const {page} = props
     }
   return (
     <div>
-        <section>
-            <div>
+        <section className={styles.sectionFa}>
+            <div className={styles.firstContainer}>
                 <p>filter By Genres</p>
                 <select name="filterByGenres" 
                 value={select.filterByGenres} 
@@ -61,6 +78,16 @@ const {page} = props
                     {props.genres.map((item) => (
                     <option key={item.name} value={item.name}>{item.name}</option>
                     ))}
+                </select>
+            </div>
+            <div>
+                <p>Filter by Source</p>
+                <select name="filterBySource"
+                value={select.filterBySource}
+                onChange={(e) => handleSource(e)}>
+                    <option value="all">All Videogames</option>
+                    <option value="api">From Api</option>
+                    <option value="db">From Db</option>
                 </select>
             </div>
             <div>
@@ -83,13 +110,15 @@ const {page} = props
 
 const mapStateToProps = (state) =>({
     genres: state.genres
+    
 })
 
 const mapDispatchToProps = {
     getGenres,
     filterByGenres,
     getAllVideogames,
-    orderBy
+    orderBy,
+    filterBySource
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FiltersAndOrder)

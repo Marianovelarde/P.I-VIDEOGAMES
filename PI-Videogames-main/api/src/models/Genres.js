@@ -7,7 +7,7 @@ module.exports = (sequelize) => {
   sequelize.define('genres', {
     id: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUID,
+        defaultValue: () => uuid(),
         primaryKey: true,  // Marcar como clave primaria
         allowNull: false,
         unique: true,
