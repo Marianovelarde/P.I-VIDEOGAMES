@@ -1,5 +1,7 @@
 
-import { 
+import {
+    START_LOADING,
+    STOP_LOADING,
     GET_ALL_GENRES,
     GET_ALL_VIDEOGAMES,
     GET_VIDEOGAMES_BY_NAME,
@@ -7,6 +9,7 @@ import {
     GET_PLATFORMS ,
     FILTER_BY_GENRES,
     FILTER_BY_SOURCE,
+    FILTER_BY_GENRES_AND_SOURCE,
     ORDER_BY,
     POST_VIDEOGAMES,} from "./actions"
 
@@ -15,10 +18,12 @@ const initialState = {
     copyVideogames : [],
     genres: [],
     details: [],
-    platforms: []
+    platforms: [],
+    loading: false
 }
 const rootReducer =  (state = initialState, action)  => {
     console.log(state);
+
     switch (action.type) {
         case GET_ALL_VIDEOGAMES: 
         return {
@@ -54,43 +59,44 @@ const rootReducer =  (state = initialState, action)  => {
                 ...state,
                
             }
-        case FILTER_BY_GENRES:
-    const allVideogames = state.copyVideogames;
-    const selectedGenre = action.payload;
-
-    const genresFiltered =
-        selectedGenre === 'all'
-            ? allVideogames
-            : allVideogames.filter((el) =>
-                  el.genres ? el.genres.some(genre => genre.name === selectedGenre) : false
-            );
-        
-    return {
-        ...state,
-        videogames: genresFiltered
-    };
-
-    case FILTER_BY_SOURCE: 
-    let videogameBySource
-     switch(action.payload){
-        case 'all': 
-        videogameBySource = state.copyVideogames
-        break;
-        case 'api': 
-        videogameBySource = state.copyVideogames.filter((el) => typeof el.id === 'number')
-        console.log('Filtro by api:', videogameBySource);
-        break;
-        case 'db':
-        videogameBySource = state.copyVideogames.filter((el) => typeof el.id !== 'number')
-        console.log('Filtro by Db: ',videogameBySource);
-        break;
-        default:
-        videogameBySource = state.copyVideogames
-    }
-    return {
-        ...state,
-        videogames: videogameBySource
-    }
+        case START_LOADING: 
+            return {
+                ...state,
+                loading: true
+        }
+        case STOP_LOADING: 
+            return {
+                ...state,
+                loading: false
+            }
+            
+            case FILTER_BY_GENRES_AND_SOURCE:
+                const allVideogames = state.copyVideogames;
+                const { selectedGenre, selectedSource } = action.payload;
+                console.log('Selected Genre:', selectedGenre);
+                console.log('Selected Source:', selectedSource);
+                const filteredVideogames =
+                    selectedGenre === 'all'
+                        ? allVideogames
+                        : allVideogames.filter((el) =>
+                              el.genres ? el.genres.some(genre => genre.name === selectedGenre) : false
+                        );
+                        
+            
+                const videogamesFilteredBySource =
+                    selectedSource === 'all'
+                        ? filteredVideogames
+                        : selectedSource === 'api'
+                        ? filteredVideogames.filter((el) => typeof el.id === 'number')
+                        : selectedSource === 'db'
+                        ? filteredVideogames.filter((el) => typeof el.id !== 'number')
+                        : filteredVideogames;
+            
+                return {
+                    ...state,
+                    videogames: videogamesFilteredBySource,
+                };
+            
     case ORDER_BY:
         const orderByType = action.payload;
         const currentVideogames = state.videogames.slice(); // Clona el array original
@@ -108,9 +114,14 @@ const rootReducer =  (state = initialState, action)  => {
                 case 'ratingDesc':
                     currentVideogames.sort((a, b) => (b.rating) - (a.rating));
                 break;
+                case 'orderNone': 
+                return {
+                    ...state,
+                    
+                }
             default:
                 // No se especifica un tipo de orden, devolver el estado actual
-                return state;
+                return  state
         }
         return {
             ...state,

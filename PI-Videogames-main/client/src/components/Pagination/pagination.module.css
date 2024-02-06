@@ -1,0 +1,25 @@
+.firstContainer {
+    text-align: center;
+}
+.buttonPag  {
+    display: inline-flex;
+}
+
+.buttonPag button {
+    margin-left: 20px;
+    margin-top: 10px;
+    color: black;
+    background-color: violet;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(148, 87, 235, 0.5); /* Cambia el color de la sombra a violeta */
+    height: 30px;
+
+    border: 1px solid black;
+    border-radius: 10px; /* Añade el radio de borde de 15px */
+}
+.buttonPag button:hover {
+    background-color: #8a2be2; /* Cambia el color de fondo al pasar el ratón sobre el botón */
+    color: #fff; /* Cambia el color del texto al pasar el ratón sobre el botón */
+    box-shadow: 0 4px 8px rgba(148, 87, 235, 0.7); /* Ajusta la sombra al pasar el ratón */
+    cursor: pointer;
+}

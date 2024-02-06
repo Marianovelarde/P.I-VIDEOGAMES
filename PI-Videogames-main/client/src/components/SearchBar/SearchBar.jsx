@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { getVideogamesByName, getAllVideogames } from '../../Redux/actions'
+import { getVideogamesByName, getAllVideogames, } from '../../Redux/actions'
+import styles from './searchBar.module.css'
 import { connect } from 'react-redux'
 
 const SearchBar = (props) => {
@@ -14,27 +15,21 @@ const SearchBar = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         props.getVideogamesByName(name)
-    }
-
-    const reset = () => {
         setName('')
-        props.getAllVideogames()
     }
 
     return (
 
-    <div>
-        <header>
-           
-
+    <div className={styles.firstContainer}>
+        <header >
             <form onSubmit={handleSubmit}>
                 <input 
                 type="text"
                 placeholder='Search Videogame'
                 value={name}
                 onChange={handleChange} />
-                <button type='submit'>Buscar</button>
-                <button type='button' onClick={reset}>Reset</button>
+                <button className={styles.buttonIcon} type='submit'><i class="fa-solid fa-magnifying-glass"></i></button>
+                
             </form>
         </header>
     </div>

@@ -1,7 +1,7 @@
 .cardsContainer {
     display: flex;
     flex-wrap: wrap; /* Permite que las tarjetas se envuelvan a la siguiente línea cuando no hay suficiente espacio */
-    justify-content: space-around;
-    object-fit: cover;
+    justify-content: center;
+    margin-top: 10px;
 
 }

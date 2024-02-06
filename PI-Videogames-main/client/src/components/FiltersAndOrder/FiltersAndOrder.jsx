@@ -4,7 +4,8 @@ import {
     getGenres, 
     filterByGenres, 
     orderBy,
-    filterBySource } from '../../Redux/actions'
+    filterBySource,
+    filterByGenresAndSource } from '../../Redux/actions'
 import { connect } from 'react-redux'
 import styles from '../FiltersAndOrder/styledComponent.module.css'
 
@@ -18,7 +19,8 @@ const {page} = props
         filterBySource: 'all',
         orderBy: 'orderNone'
     })
-    console.log('Estado actual de filterBySource:', select.filterBySource);
+    
+   
 
     useEffect(()=>{
         props.getGenres()
@@ -27,12 +29,12 @@ const {page} = props
 
     const handleFilterGender = (e) => {
         const {value} = e.target
-        console.log(value)
+        
         setSelect({
             ...select,
             filterByGenres: value
         })
-        props.filterByGenres(value)
+        props.filterByGenresAndSource(value)
         page(1)
     }
     const handleSource = (e) => {
@@ -44,7 +46,7 @@ const {page} = props
         })
        
         page(1)
-        props.filterBySource(value)
+        props.filterByGenresAndSource(select.filterByGenres, value);    
     }
 
     const handleOrder = async (e) => {
@@ -56,7 +58,7 @@ const {page} = props
     
         if (value === 'orderNone') {
             try {
-                props.getAllVideogames();
+                props.filterByGenresAndSource(select.filterByGenres, select.filterBySource)
             } catch (error) {
                 console.error('Error en el ordenamiento: ', error.message);
             }
@@ -66,12 +68,19 @@ const {page} = props
         }
         page(1);
     }
+
+    
+    const reset = () => {
+        
+        props.getAllVideogames()
+    }
+
   return (
-    <div>
-        <section className={styles.sectionFa}>
-            <div className={styles.firstContainer}>
+    <div className={styles.firstContainer}>
+        <section className={styles.sectionFo}>
+            <div>
                 <p>filter By Genres</p>
-                <select name="filterByGenres" 
+                <select className={styles.selectContainer} name="filterByGenres" 
                 value={select.filterByGenres} 
                 onChange={e => handleFilterGender(e)}>
                     <option key='all' value='all'>all Genres</option>
@@ -82,7 +91,7 @@ const {page} = props
             </div>
             <div>
                 <p>Filter by Source</p>
-                <select name="filterBySource"
+                <select className={styles.selectContainer} name="filterBySource"
                 value={select.filterBySource}
                 onChange={(e) => handleSource(e)}>
                     <option value="all">All Videogames</option>
@@ -92,16 +101,17 @@ const {page} = props
             </div>
             <div>
                 <p>Ordenar por:</p>
-                <select name="orderBy" value={select.orderBy} onChange={e => handleOrder(e)}>
+                <select className={styles.selectContainer} name="orderBy" value={select.orderBy} onChange={e => handleOrder(e)}>
                     <option value="orderNone">-</option>
                     <option value="videogameAsc">Videogames (A - Z)</option>
                     <option value="videogameDesc">Videogames (Z - A)</option>
                 </select>
-                <select name="orderBy" value={select.orderBy} onChange={e => handleOrder(e)}>
+                <select className={styles.selectContainer} name="orderBy" value={select.orderBy} onChange={e => handleOrder(e)}>
                     <option value="orderNone">-</option>
                     <option value="ratingAsc">Rating asc</option>
                     <option value="ratingDesc">Rating desc</option>
                 </select>
+            <button className={styles.selectContainer} type='button' onClick={reset}>Reset</button>
             </div>
         </section>
     </div>
@@ -118,7 +128,8 @@ const mapDispatchToProps = {
     filterByGenres,
     getAllVideogames,
     orderBy,
-    filterBySource
+    filterBySource,
+    filterByGenresAndSource
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FiltersAndOrder)

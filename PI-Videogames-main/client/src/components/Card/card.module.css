@@ -1,18 +1,20 @@
 .containerCard {
-    display: display;
+    display: flex;
+    justify-content: space-between;
+    
     border: 1px solid black;
     border-radius: 5px;
     box-sizing: border-box;
-    max-height: 300px;
+    max-height: 270px;
     max-width: 300px;
     flex-direction: column;
     padding: 100px;
-    margin-left: 25px;
+    margin-left: 20px;
     margin-bottom: 25px;
-    text-align: center;
-    background-color: rgba(8, 7, 10, 0);
-
+    background-color: rgba(252, 250, 255, 0.5);
+    box-shadow: 2px 2px 4px 4px rgba(227, 209, 252, 1);
     overflow: hidden;
+    z-index: 1;
     
     
     
@@ -30,25 +32,38 @@
     padding: 5px;
     border: 1px solid black;
     border-radius: 1px solid black;
+    object-fit: cover;
   }
-
+  .containerCard:hover{
+    background-color: rgb(255, 162, 41, 0.6);
+    transition: background-color 0.5s;
+  }
   .textCard {
+    padding: 10px; /* Añade algún relleno al contenedor de texto */
+    font-size: 14px;
+    position: relative;
+    bottom: 25px;
+    right: 60px;
+}
+
+  .textCard p {
+    display: inline;
+    position: relative;
+    bottom: 10px;
+   
     
+
+   
   }
   .textCard strong {
+    font-size: 13px;
+    display: flex;
+    position: relative;
+    left: 50px;
+    justify-content: space-around;
+    white-space: nowrap;
+    color:black;
     margin-top: 5px;
-    margin-right: -50px;
   }
 
-  .containerCard button {
-    text-align: center;
-    
-    margin-left: 50px;
-    border-radius: 5px solid white;
-  }
-  .containerCard button:hover {
-    background-color: azure;
-    cursor: pointer;
-    border: 1px solid black;
-  
-  }
+ 

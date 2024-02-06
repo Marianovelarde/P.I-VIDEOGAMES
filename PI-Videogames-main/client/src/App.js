@@ -4,7 +4,7 @@ import {Routes, Route} from 'react-router-dom'
 import Home from '../src/components/Home/Home'
 import LandingPage from '../src/components/LandingPage/LandingPage'
 import Details from './components/Details/Details';
-import SearchBar from './components/SearchBar/SearchBar';
+import NavBar from './Views/NavBar/NavBar';
 import Create from './Views/Form/Create';
 function App() {
 
@@ -15,6 +15,7 @@ function App() {
   ELEMENT: EL COMPONENTE QUE SE RENDERIZARÁ*/
   return (
     <div>
+      <NavBar/>
     <Routes>
       
         <Route

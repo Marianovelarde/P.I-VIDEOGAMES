@@ -1,0 +1,28 @@
+.firstContainer {
+    display:flex;
+
+}
+.buttonIcon {
+    color: white;
+    background-color: rgb(27, 25, 25);
+    font-size: 20px;
+    border-radius:  0px 10px 10px 0px;
+}
+.buttonIcon:hover {
+    background-color: peru;
+}
+.buttonIcon i {
+    margin-bottom: 8px;
+    margin-top: 3px;
+}
+
+.firstContainer input {
+    padding: 10px;
+    margin-right: 0px;
+    margin-top: 16px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.firstContainer input:hover {
+    background-color: peru;
+}

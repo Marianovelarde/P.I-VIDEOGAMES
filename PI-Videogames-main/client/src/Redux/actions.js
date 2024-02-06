@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+export const START_LOADING = 'START_LOADING';
+export const STOP_LOADING = 'STOP_LOADING';
 export const GET_ALL_VIDEOGAMES = 'GET_ALL_VIDEOGAMES';
 export const GET_VIDEOGAMES_BY_NAME = 'GET_VIDEOGAMES_BY_NAME';
 export const GET_ALL_GENRES = 'GET_ALL_GENRES';
@@ -10,11 +12,24 @@ export const PAGINATE = 'PAGINATE'
 export const POST_VIDEOGAMES = 'POST_VIDEOGAMES'
 export const GET_PLATFORMS = 'GET_PLATAFORMS'
 export const FILTER_BY_SOURCE = "FILTER_BY_SOURCE"
+export const FILTER_BY_GENRES_AND_SOURCE = 'FILTER_BY_GENRES_AND_SOURCE'
 
 
+export const startLoading = () => {
+    return {
+      type: START_LOADING,
+    };
+  };
+  
+  export const stopLoading = () => {
+    return {
+      type: STOP_LOADING,
+    };
+  };
 
 export const getAllVideogames =  (payload) => async (dispatch) => {
     try {
+        dispatch(startLoading())
         const videogames = await axios.get('http://localhost:3001/videogames')
         const data = videogames.data
         dispatch({
@@ -23,6 +38,8 @@ export const getAllVideogames =  (payload) => async (dispatch) => {
         })
     } catch (error) {
         console.error('Error al recibir información desde el servidor: ', error.message)
+    } finally {
+        dispatch((stopLoading()))
     }
 }
 export const paginate = () => {
@@ -102,6 +119,12 @@ export const filterBySource = (source) => {
         payload: source
     }
 }
+export const filterByGenresAndSource = (selectedGenre, selectedSource) => {
+    return {
+        type: FILTER_BY_GENRES_AND_SOURCE,
+        payload: { selectedGenre, selectedSource },
+    };
+};
 
 export const orderBy = (order) => {
     return {

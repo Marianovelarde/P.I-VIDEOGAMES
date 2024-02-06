@@ -1,4 +1,27 @@
-.sectionFa {
+.sectionFo {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    
+}
+.selectContainer {
+    margin-left: 10px;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 10px;
+    z-index: 3;
+    
+    
+}
+.sectionFo p {
+    color:white;
+}
+.selectContainer:hover {
+    background-color: peru;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.selectContainer option {
+    background-color: peru;
+    overflow: scroll;
+    
 }

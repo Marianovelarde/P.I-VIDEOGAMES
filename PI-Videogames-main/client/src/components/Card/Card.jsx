@@ -9,9 +9,6 @@ const Card = (props) => {
     
     const navigate = useNavigate()
     
-    const handleClick = () => {
-        navigate(`/videogames/${id}`)
-    }
     return (
         <div className={styles.containerCard}>
             <div className={styles.imgCard}>
@@ -21,6 +18,8 @@ const Card = (props) => {
             </div>
             <div className={styles.textCard}>
                 <strong>{name}</strong>
+                <br />
+                <p><b>Genres: </b></p>
                 {genres.map((genre, index) => (
                         <p key={index}>{genre.name}{index !== genres.length - 1 && ','}</p>
                     ))}

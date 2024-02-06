@@ -1,6 +1,8 @@
 .containerNav {
-display: flex;
-justify-content: space-around;
+background-color: peru;
+border: 1px solid black;
+border-radius: 4px;
+
 }
 .containerNav h1 {
     font-family: 'Chakra Petch', sans-serif;
@@ -9,3 +11,72 @@ justify-content: space-around;
     color:white;
     text-shadow: 4px 4px 4px rgb(243, 29, 243);
 }
+/* navbar.module.css */
+
+/* navbar.module.css */
+
+.menuControllers {
+    position: relative;
+    
+  }
+  
+  .menuIcon {
+    font-size: 50px;
+    cursor: pointer;
+  }
+  
+  .menuToggle {
+    display: none;
+  }
+  
+  .menuList {
+    list-style: none;
+    line-height: 30px;
+    padding: 0;
+    position: absolute;
+    top: 80%;
+    right: 0;
+    left: 0;
+    background-color: rgba(15, 15, 14, 0.5);
+    border: 1px solid peru;
+    border-radius: 4px;
+    display: none;
+    width: 150px;
+    height: 300px;
+    
+    text-align: left;
+    box-shadow: 0 0 10px rgba(241, 222, 222, 0.5);
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(100%);
+    z-index: 2;
+  }
+  
+  .menuBackdrop {
+    
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(255, 165, 0, 0.7);
+    display: none;
+    transition: all 0.5s;
+  }
+  
+  .menuToggle:checked ~ .menuList,
+  .menuToggle:checked ~ .menuBackdrop {
+    display: block;
+    transform: translateX(0);
+  }
+  
+  .menuList li {
+    font-size: 30px;
+    color:white;
+    margin-top: 10px;
+    margin-bottom: 80px;
+    margin-left: 5px;
+  }
+
+  .searchBar {
+    display:flex;
+    justify-content: flex-end;
+  }

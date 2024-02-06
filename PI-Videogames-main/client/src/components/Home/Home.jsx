@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+
 import {connect} from 'react-redux'
-import { getAllVideogames } from '../../Redux/actions'
+import loadingCar from '../../assets/police-car-82.gif'
+import { getAllVideogames, startLoading,stopLoading } from '../../Redux/actions'
 
 import Cards from '../Cards/Cards'
 import Pagination from '../Pagination/Pagination'
-import NavBar from '../../Views/NavBar/NavBar'
 import FiltersAndOrder from '../FiltersAndOrder/FiltersAndOrder'
-
+import styles from './home.module.css'
 
 const Home = (props) => {
 
-  const {videogames} = props
-  // const [videogames, setVideogames] = useState([])
+  const {videogames, loading} = props
+  console.log(loading);
+  
   
 
 const [currentPage, setCurrentPage] = useState(1)
@@ -28,8 +29,10 @@ const currentVideogames = videogames.slice(startIndex, endIndex)
 const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
  useEffect(()=>{
-props.getAllVideogames()
- },[])
+  startLoading()
+props.getAllVideogames().finally(() => stopLoading())
+ },[getAllVideogames, startLoading, stopLoading])
+
   // useEffect(()=>{
   //   const onSearch = async () =>{
   //     try {
@@ -43,11 +46,15 @@ props.getAllVideogames()
   //   onSearch()
   // }, [])
   return (
-    <div> 
-      <NavBar/>
-   
-      <FiltersAndOrder
+
+  <div> 
+      {loading ? (<img className={styles.imageGif} src={loadingCar} alt='loading'/>) : ( 
+        <>
+         <FiltersAndOrder
       page={setCurrentPage}/>
+
+      
+      <Cards videogames={currentVideogames}/>
 
       <Pagination
       currentPage={currentPage}
@@ -55,16 +62,22 @@ props.getAllVideogames()
       totalVideogames={videogames.length}
       paginate={paginate}
       />
+        </>
+      )}
       
-      <Cards videogames={currentVideogames}/>
+   
+     
     </div>
   )
  }
  const mapStateToProps = (state) => ({
-  videogames: state.videogames  
+  videogames: state.videogames,
+  loading: state.loading
  })
 const mapDispatchToProps = {
-  getAllVideogames
+  getAllVideogames,
+  startLoading,
+  stopLoading
 } 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

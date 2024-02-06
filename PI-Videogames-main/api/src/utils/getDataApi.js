@@ -49,6 +49,7 @@ const getDataApi = async () => {
     }
 };
 
+
 // Llamamos a la función para obtener los detalles de los juegos.
 // getDataApi()
 //     .then(data => console.log(data))
