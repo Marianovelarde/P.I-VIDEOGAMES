@@ -1,6 +1,10 @@
+//traemos el modulo de axios para buscar por nombre y por id
 const axios = require('axios')
+//variable de entorno
 require('dotenv').config()
+//traigo la info de la api
 const utils = require('../utils/getDataApi')
+//traigo la información de los models
 const {Videogame, Genres} = require('../db');
 const { Sequelize, Op, iLike } = require('sequelize');
 
@@ -59,7 +63,7 @@ const {API_KEY} = process.env
         }));
       }
   
-      // Traigo la información de la API para la búsqueda y la concateno con la base de datos.
+      //variable vacia para trabajar con la info de la api
       let dataVideogamesApi;
   
       // Si no se proporciona un nombre, obtengo todos los videojuegos de la API
@@ -68,6 +72,7 @@ const {API_KEY} = process.env
         //si se proporciona nombre se busca en la url 
       } else {
         const dataByName = await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=15&search=${name}`);
+         // Mapear los resultados para formatear la respuesta. 
         dataVideogamesApi = dataByName.data.results.map((game) => {
           const genres = game.genres.map((genre) => ({ name: genre.name }));
           return {
@@ -83,7 +88,8 @@ const {API_KEY} = process.env
       // Combina los datos de la base de datos y la API filtrados
       const allData = dataDb.concat(dataVideogamesApi);
   
-      //si llega por nombre filtramos la información . 
+       // Filtrar los resultados si se proporciona un nombre en la consulta.
+       //INCLUDES: determina si un array incluye un determinado elemento, devolviendo true o false
       if (name) {
         const response = allData.filter((el) => el.name.toLowerCase().includes(name.toLowerCase()));
   
@@ -96,7 +102,7 @@ const {API_KEY} = process.env
       res.status(200).send(allData);
     } catch (error) {
       console.error('Error: ', error.message);
-      res.status(500).json('Internal server error');
+      res.status(500).send('Error interno en el servidor: ', error.message);
     }
   };
   
@@ -105,20 +111,22 @@ const {API_KEY} = process.env
 const getVideogamesById = async (req, res) => {
 //extraemos el id
     const { idVideogame } = req.params;
-  //verificamos si es identificador unico universal para la info de la bdd
+
+  //verificamos si el ID es identificador unico universal para la info de la bdd
 
     try {
         if (esUUID(idVideogame)) {
+          //Si es uuid busca en la bdd
             let dataDb = await Videogame.findByPk(idVideogame, {
                 include: Genres
             });
-              //si hay informacion, que la muestre
+              //formatea la informacion y la muestra
             if (dataDb) {
                 return res.json({
                     id: dataDb.id,
-                    name: dataDb.nombre,
-                    description: dataDb.descripcion,
-                    platformas: dataDb.plataformas.map(pf => pf),
+                    nombre: dataDb.nombre,
+                    descripcion: dataDb.descripcion,
+                    plataformas: dataDb.plataformas,
                     imagen: dataDb.imagen,
                     fecha_de_lanzamiento: dataDb.fecha_de_lanzamiento,
                     rating: dataDb.rating,
@@ -161,31 +169,34 @@ const createVideogame = async (req, res) => {
     const {
         nombre,
         descripcion,
-        plataformas,
+        
         fecha_de_lanzamiento,
         rating,
-        genres } = req.body;
-
+         } = req.body;
+        const imagenURL  = req.file.filename;
+        const plataformas = JSON.parse(req.body.plataformas);
+        const genres = JSON.parse(req.body.genres);
+        console.log(imagenURL);
+        console.log(req.body);
 // los guardamos en la base de datos
     try {
         let gameCreate = await Videogame.create({
             nombre,
-            imagen: `https://i.pinimg.com/736x/18/1e/3a/181e3a72fa1c42015be6bf2603260dfa.jpg`,
+            imagen: imagenURL,
             descripcion,
             plataformas,
             fecha_de_lanzamiento,
             rating,
         });
 
-        // Ahora, agregamos los géneros al nuevo Videogame creado
-        
+        // agregamos los géneros al nuevo Videogame creado
         if (genres.length) {
           genres.map(async (g) => {
             try {
               let genre = await Genres.findOrCreate({ where: { nombre: g } });
               gameCreate.addGenres(genre[0]);
             } catch (err) {
-              console.log(err);
+              console.log('Error al asociar genero: ', err.message);
             }
           });
         }
@@ -195,6 +206,7 @@ const createVideogame = async (req, res) => {
         console.error('Error en la consola de create: ', error.message);
     }
 };
+
 module.exports = {
     getAllVideogames,
     getVideogamesById,

@@ -94,6 +94,7 @@ export const postVideogames = (payload) => async dispatch => {
     try {
         const createVideogame = await axios.post(`http://localhost:3001/videogame`, payload)
         const data = createVideogame.data
+        
         dispatch({
             type: POST_VIDEOGAMES,
             payload: data

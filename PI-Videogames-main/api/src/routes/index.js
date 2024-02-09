@@ -1,4 +1,18 @@
 const { Router } = require('express');
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const uploadDir = path.join(__dirname,'../../uploads');
+        cb(null, uploadDir);
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage })
 
 const {getAllVideogames, 
     getVideogamesById, 
@@ -19,7 +33,7 @@ const router = Router();
 // Configurar los routers
 router.get('/videogames', getAllVideogames)
 router.get('/videogames/:idVideogame', getVideogamesById)
-router.post('/videogame', createVideogame)
+router.post('/videogame', upload.single('imagen'), createVideogame)
 router.get('/genres', getAllGenres)
 router.get('/plataforms', getPlataforms)
 

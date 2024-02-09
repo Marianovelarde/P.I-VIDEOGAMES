@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { postVideogames, getGenres, getPlatforms } from '../../Redux/actions'
+import styles from './create.module.css'
 
 const validate = (input) => {
       let errors = {}
@@ -44,6 +45,7 @@ const Create = (props) => {
     
     const [input, setInput] = useState({
     nombre: '',
+    imagen: null,
     descripcion: '',
     plataformas: [],
     fecha_de_lanzamiento: '',
@@ -52,12 +54,20 @@ const Create = (props) => {
     })
     
     const [errors, setErrors] = useState({})
-
     
+
+    const handleImagenChange = (e) => {
+        const file = e.target.files[0];
+        setInput({
+            ...input,
+            imagen: file
+        })
+       
+    };
 useEffect(()=>{
     dispatch(getGenres())
     dispatch(getPlatforms())
-}, [input.genres, input.plataformas])
+}, [input.plataformas, input.genres])
 
     const handleChange = (e) => {
         const { name, value  } = e.target;
@@ -77,6 +87,7 @@ useEffect(()=>{
     
     const handleSelectPlataforms = (e) => {
         const {value} = e.target
+        console.log(value);
         if (value !== 'none' && !input.plataformas.includes(value)) {
             setInput({
               ...input,
@@ -92,6 +103,7 @@ useEffect(()=>{
 
     const handleSelectgenres = (e) => {
         const { value } = e.target;
+        console.log(value);
        
         if (value !== 'none' && !input.genres.includes(value)) {
             setInput({
@@ -132,26 +144,30 @@ useEffect(()=>{
         })
         )
         if (Object.keys(errors).length === 0) {
-            const post = {
-                nombre: input.nombre,
-                imagen: input.imagen,
-                descripcion: input.descripcion,
-                plataformas: input.plataformas,
-                fecha_de_lanzamiento: input.fecha_de_lanzamiento,
-                rating: input.rating,
-                genres: input.genres
-            }
-            dispatch(postVideogames(post))
-            alert('Has creado un nuevo Videogame.')
+                const formData = new FormData();
+                formData.append('nombre', input.nombre)
+                formData.append('descripcion', input.descripcion)
+                formData.append('plataformas', JSON.stringify(input.plataformas));
+                formData.append('genres', JSON.stringify(input.genres));
+                formData.append('fecha_de_lanzamiento', input.fecha_de_lanzamiento)
+                formData.append('rating', input.rating)
+                
+                formData.append('imagen', input.imagen)
+                console.log(formData.get('plataformas'))
+                console.log(formData.get('genres'))
+            dispatch(postVideogames(formData))
+            console.log('formData2: ', input.plataformas,input.genres);
+            alert('Has creado un nuevo Videogame.',)
             setInput({
                 nombre: '',
                 descripcion: '',
-                plataformas: input.plataformas,
+                plataformas: [],
                 fecha_de_lanzamiento: '',
                 rating: '',
-                genres: input.genres
+                genres: [],
+                imagen: null
             })
-            
+                 
         } else {
             alert('Completar los campos')
     
@@ -159,10 +175,10 @@ useEffect(()=>{
 }
 
     return (
-    <div>
+    <div className={styles.firstContainer}>
         <section>
-            <form onSubmit={(e) => handleSubmit(e)}>
-
+            <form onSubmit={(e) => handleSubmit(e)} encType="multipart/form-data">
+            <div className ={styles.formContainer}>
                 <h2>Creá tu videogame</h2>
 
                 <p>nombre del videogame</p>
@@ -174,6 +190,8 @@ useEffect(()=>{
                 placeholder='Nombre del videogame'
                 onChange={(e) => handleChange(e)}
                  />
+                 <p>imagen</p>
+                 <input type="file" name='imagen' onChange={e => handleImagenChange(e)}/>
                  <p>descripcion</p>
                  {errors.descripcion && <span>{errors.descripcion}</span>}
 
@@ -215,7 +233,7 @@ useEffect(()=>{
                             {i}
 
                             <button type="button" onClick={() => handleRemovePlatform(index)}>
-                                     Eliminar
+                                     x
                                 </button>
                             </li>
                         
@@ -240,8 +258,9 @@ useEffect(()=>{
                                 </button>
                         </li>
                     ))}
-                </ul>
                     <button type='submit'>Enviar</button>
+                </ul>
+            </div>
             </form>
         </section>
 

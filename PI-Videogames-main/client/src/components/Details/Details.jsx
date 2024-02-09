@@ -40,6 +40,7 @@ const Details = (props) => {
           <p>Rating: {rating}</p>
           <p>Plataformas: {plataformas && plataformas.join(', ')}</p>
           <p>Géneros: {genres && genres.map((genre) => genre.name).join(', ')}</p>
+        
           <Link to='/home'>
           <button>Volver</button>
           </Link>

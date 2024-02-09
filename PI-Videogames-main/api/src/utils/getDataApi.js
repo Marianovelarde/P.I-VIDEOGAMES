@@ -24,10 +24,10 @@ const getDataApi = async () => {
             const apiGames = await axios.get(URL); //hacemos la solicitud get a la url construida
             const gamesList = apiGames.data.results; //extraemos la lista de videogames
 
-            const gamePromises = gamesList.map(async (game) => { //mapeo la lista de juegos y creo un array de promesas que representan la estructura que deseo
+            const gamePromises = gamesList.map(async (game) => { //mapeo la lista de juegos
                 const genres = game.genres.map(genre => ({ name: genre.name })); //extraigo el genero por nombre
              
-
+                //devolvemos lo que necesitamos mostrar en la card principal
                 return {
                     id: game.id,
                     name: game.name,             
@@ -36,15 +36,15 @@ const getDataApi = async () => {
                     rating: game.rating
                 };
             });
-                //aqui esperamos que se cumplan todas las promesas para continuar con la siguiente pag
+                //aqui esperamos que se cumplan todas las promesas 
             const gameDetails = await Promise.all(gamePromises);
-            allGamesDetails.push(...gameDetails); //agrega los detalles de videogames al array
+            allGamesDetails.push(...gameDetails); //agrega los detalles de videogames al array allGamesDetails
         }
 
         return allGamesDetails; //devolvemos el array
     } catch (error) {
         res.status(500).send
-        console.error('Error obteniendo datos de la API : ', error);
+        console.error('Error obteniendo datos de la API : ', error.message);
        
     }
 };
@@ -56,6 +56,7 @@ const getDataApi = async () => {
 //     .catch(error => console.error(error));
 
 const getDataApiGenres = async () => {
+    //consulta para obtener la información de los géneros
     try {
         let dataApi = await axios.get(`https://api.rawg.io/api/genres?key=${API_KEY}`)
         let response = dataApi.data.results.map((e) => {
@@ -67,7 +68,8 @@ const getDataApiGenres = async () => {
         return response
 
     } catch (error) {
-        
+        res.status(500).send
+        console.error('Error al obtener datos generos de la api: ', error.mesage)
     }
    
 }
