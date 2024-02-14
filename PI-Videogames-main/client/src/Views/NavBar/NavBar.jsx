@@ -1,13 +1,16 @@
 import React from 'react';
+
 import styles from './navbar.module.css';
 import SearchBar from '../../components/SearchBar/SearchBar'
+import { Link } from 'react-router-dom';
 
-const NavBar = () => {
+const NavBar = (props) => {
+  const {page} = props
   return (
     <div className={styles.containerNav}>
       <header>
         <div className={styles.searchBar}>
-            <SearchBar/>
+            <SearchBar page={page}/>
         </div>
         <h1>Videogames P.I soy Henry.</h1>
         <main>
@@ -18,9 +21,15 @@ const NavBar = () => {
             </label>
             <div className={styles.menuBackdrop}></div>
             <ul className={styles.menuList}>
-              <li>Home</li>
-              <li>About</li>
-              <li>Create</li>
+              <Link className={styles.link} to='/home'>
+                  <li>Home</li>
+              </Link>
+              <Link className={styles.link} to='/about'>
+                  <li>About</li>
+              </Link>
+              <Link className={styles.link} to='/create'>
+                  <li>Create</li>
+              </Link>
             </ul>
           </div>
         </main>

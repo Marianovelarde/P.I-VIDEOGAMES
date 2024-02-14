@@ -1,0 +1,33 @@
+.firstContainer {
+    background-image: url('../../assets/wallpaperLanding.gif');
+    background-size: contain;
+    height: 610px;
+    display: flex; /* Establecer como flexbox */
+    flex-direction: column; /* Alinear elementos en columna */
+    justify-content: center; /* Centrar verticalmente */
+    align-items: center; /* Centrar horizontalmente */
+}
+
+.firstContainer h1 {
+    font-family: 'videogame2', sans-serif;
+    color: rgb(6, 150, 114);
+    font-size: 50px;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.firstContainer button {
+    font-family: 'videogame2', sans-serif;
+    font-size: 24px;
+    background-color: #e77bba;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.firstContainer button:hover {
+    background-color: #770594;
+}

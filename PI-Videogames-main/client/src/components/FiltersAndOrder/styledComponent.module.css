@@ -20,8 +20,7 @@
     transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
-.selectContainer option {
-    background-color: peru;
-    overflow: scroll;
-    
+.noResults {
+    display: flex;
+    flex-direction: column;
 }

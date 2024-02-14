@@ -3,13 +3,14 @@
 
 }
 .buttonIcon {
-    color: white;
-    background-color: rgb(27, 25, 25);
+    margin-right: 20px;
+    color: rgb(14, 12, 12);
+    background-color: rgb(255, 245, 245);
     font-size: 20px;
     border-radius:  0px 10px 10px 0px;
 }
 .buttonIcon:hover {
-    background-color: peru;
+    cursor: pointer;
 }
 .buttonIcon i {
     margin-bottom: 8px;
@@ -17,12 +18,13 @@
 }
 
 .firstContainer input {
+    background-color: rgb(255, 245, 245);
     padding: 10px;
-    margin-right: 0px;
+    margin-right: 0;
     margin-top: 16px;
     border: 1px solid black;
     border-radius: 5px;
 }
 .firstContainer input:hover {
-    background-color: peru;
+    background-color: rgb(235, 211, 187);
 }

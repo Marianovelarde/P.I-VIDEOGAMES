@@ -1,0 +1,19 @@
+.footerContainer { 
+    
+    font-family: 'Chakra Petch', sans-serif;
+    letter-spacing: 1px;
+    display: flex;
+    width: 100%;
+    height: 70px;
+    background-color: peru;
+    align-items: center;
+    justify-content: space-around
+}
+
+.footerContainer a i {
+    color: black;
+    font-size: 30px;
+}
+.footerContainer a i:hover {
+    color: rgb(66, 25, 141);
+}

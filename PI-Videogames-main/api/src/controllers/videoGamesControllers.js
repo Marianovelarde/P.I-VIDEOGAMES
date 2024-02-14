@@ -164,22 +164,26 @@ const getVideogamesById = async (req, res) => {
     }
 };
 //Funcion para crear información: 
-//recibimos datos que serán ingresados desde el form
+//recibimos datos recibidos del cuerpo de la solicitud. 
 const createVideogame = async (req, res) => {
     const {
         nombre,
         descripcion,
-        
         fecha_de_lanzamiento,
         rating,
          } = req.body;
+         //Nombre del archivo subido
         const imagenURL  = req.file.filename;
+        //estos datos recibidos son convertidos de un cadena JSON a un objeto js
         const plataformas = JSON.parse(req.body.plataformas);
         const genres = JSON.parse(req.body.genres);
         console.log(imagenURL);
         console.log(req.body);
-// los guardamos en la base de datos
+
     try {
+      /*Creación de un nuevo VIDEOGAME en la base de datos.
+        - Utilizamos el model Videogame para crear un nuevo registro en la base de datos con los datos proporcionados
+      */
         let gameCreate = await Videogame.create({
             nombre,
             imagen: imagenURL,
@@ -188,8 +192,21 @@ const createVideogame = async (req, res) => {
             fecha_de_lanzamiento,
             rating,
         });
-
-        // agregamos los géneros al nuevo Videogame creado
+        /* 
+          asociación de generos al videogame: 
+          busca o crea el genero  en la base de datos
+          asocia el género al nuevo videogame creado
+          1_ verificamos si hay generos proporcionados en la solicitud. Si genres.length es mayor que 0, significa que hay generos disponibles para asociar al videogame
+          2_ mapeo con genres.map 
+           - utilizo el método .map para iterar sobre cada elemento de genres
+           - cada elemento g representa un genero del videogame
+          3_ creación o busqueda del género
+            - utiliza el método Genres para buscar o crear un nuevo genero en la base de datos.
+            - findOrCreate: busca un género con el nombre  proporcionado en la base de datos. Si no lo encuentra lo crea automaticamente.
+          4_ asociación del genero:
+            - una vez encontrado o creado el genero se utiliza el método addGenres() para asociar el genero al videogame
+            - genre[0] es  el primer elemento del array devuelto por findOrCreate que contiene el genero encontrado o creado
+        */
         if (genres.length) {
           genres.map(async (g) => {
             try {
@@ -200,16 +217,54 @@ const createVideogame = async (req, res) => {
             }
           });
         }
-      res.status(201).send(gameCreate);
+        res.status(201).send(gameCreate);
+        console.log(gameCreate);
     } catch (error) {
         res.status(500).send('Error interno en el servidor');
         console.error('Error en la consola de create: ', error.message);
     }
 };
 
+//controlador Node para la eliminación de videogames
+/*
+  extraemos el id por params. 
+  buscamos la primera coincidencia
+  si no se encuentra. devolvemos status 404
+  eliminamos la asociación con el genero
+  destruimos el videogame con where: id
+*/
+const deleteVideogame = async (req,res) => {
+  const {id} = req.params
+
+  try {
+    const videogame = await Videogame.findByPk(id)
+    if(!videogame) {
+      res.status(404).send('No se pudo eliminar el videogame')
+    }
+    
+    await videogame.removeGenres();
+    
+    await Videogame.destroy({where: {id} })
+    res.status(200).send('El videogame ha sido eliminado exitosamente de la base de datos.')
+  } catch (error) {
+    console.error('Error interno al eliminar: ', error.message)
+    res.status(500).send('Error al eliminar videogame: ', error.message)
+  }
+}
+
+
+/* 
+  Manejo de Errores y Respuesta:
+  Si se crea exitosamente el nuevo videojuego, devuelve el objeto creado con el estado HTTP 201 (Created).
+
+  Si ocurre algún error durante el proceso de creación, devuelve un mensaje de error con el estado HTTP 500 (Internal Server Error) y registra el error en la consola.
+*/
+
 module.exports = {
     getAllVideogames,
     getVideogamesById,
-    createVideogame
+    createVideogame,
+    deleteVideogame
+    
 
 }

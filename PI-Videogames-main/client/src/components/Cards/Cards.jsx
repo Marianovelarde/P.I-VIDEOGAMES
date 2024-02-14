@@ -4,7 +4,7 @@ import styles from './cards.module.css'
 const Cards = (props) => {
 
     const {videogames} = props
-
+//se recibe por props videogames que es un nuevo array con el start y el end index
 
   return (
     <div className={styles.cardsContainer}>
@@ -14,7 +14,7 @@ const Cards = (props) => {
                 key={vg.id}
                 id={vg.id}
                 name={vg.name}
-                image={vg.image}
+                imagen={vg.image}
                 genres={vg.genres}
                 rating={vg.rating}  
                 />

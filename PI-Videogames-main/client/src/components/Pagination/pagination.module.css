@@ -1,5 +1,10 @@
+@font-face {
+    font-family: 'videogame2';
+    src: url('../../fonts/PixeloidMono.ttf');
+}
 .firstContainer {
     text-align: center;
+    margin-bottom: 10px;
 }
 .buttonPag  {
     display: inline-flex;
@@ -12,7 +17,7 @@
     background-color: violet;
     transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
     box-shadow: 0 2px 4px rgba(148, 87, 235, 0.5); /* Cambia el color de la sombra a violeta */
-    height: 30px;
+    height: 25px;
 
     border: 1px solid black;
     border-radius: 10px; /* Añade el radio de borde de 15px */
@@ -22,4 +27,10 @@
     color: #fff; /* Cambia el color del texto al pasar el ratón sobre el botón */
     box-shadow: 0 4px 8px rgba(148, 87, 235, 0.7); /* Ajusta la sombra al pasar el ratón */
     cursor: pointer;
+}
+.firstContainer span {
+font-size: 20px;
+font-family: 'videogame2', sans-serif;
+color: peru;
+letter-spacing: 1px;
 }

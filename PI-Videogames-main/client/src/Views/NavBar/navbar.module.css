@@ -1,15 +1,21 @@
+@font-face {
+  font-family: videogame2;
+  src: url('../../fonts/PixeloidMono.ttf');
+}
 .containerNav {
-background-color: peru;
-border: 1px solid black;
-border-radius: 4px;
+  height: 130px;
+  background-color: peru;
+  border: 1px solid black;
+  border-radius: 4px;
 
 }
 .containerNav h1 {
-    font-family: 'Chakra Petch', sans-serif;
-    font-family: 'Roboto', sans-serif;
-    font-family: 'Rubik', sans-serif;
+    text-align: center;
+    margin-top: -50px;
+    font-family: 'videogame2', sans-serif;
+    letter-spacing: 5px;
     color:white;
-    text-shadow: 4px 4px 4px rgb(243, 29, 243);
+    text-shadow: 4px 4px 4px rgb(83, 30, 228);
 }
 /* navbar.module.css */
 
@@ -23,6 +29,10 @@ border-radius: 4px;
   .menuIcon {
     font-size: 50px;
     cursor: pointer;
+   
+  }
+  .menuIcon img {
+    color: white;
   }
   
   .menuToggle {
@@ -34,7 +44,7 @@ border-radius: 4px;
     line-height: 30px;
     padding: 0;
     position: absolute;
-    top: 80%;
+    top: 74%;
     right: 0;
     left: 0;
     background-color: rgba(15, 15, 14, 0.5);
@@ -43,7 +53,6 @@ border-radius: 4px;
     display: none;
     width: 150px;
     height: 300px;
-    
     text-align: left;
     box-shadow: 0 0 10px rgba(241, 222, 222, 0.5);
     transition: transform 0.3s ease-in-out;
@@ -67,16 +76,30 @@ border-radius: 4px;
     display: block;
     transform: translateX(0);
   }
-  
+ 
   .menuList li {
     font-size: 30px;
+    font-family: 'Chakra Petch', sans-serif;
+    letter-spacing: 2px;
     color:white;
     margin-top: 10px;
     margin-bottom: 80px;
-    margin-left: 5px;
+    margin-left: 2px;
+    transition: text-shadow 0.3s, background-color 0.3s; /* Agrega una transición suave */
+    height: 30px;
   }
-
+  
+  .menuList li:hover {
+     /* Efecto de sombra al pasar el cursor */
+    background-color: peru; /* Color de fondo al pasar el cursor */
+    color: white;
+    text-shadow: 4px 4px 4px rgb(83, 30, 228);
+  }
   .searchBar {
     display:flex;
     justify-content: flex-end;
+  }
+  .link {
+    text-decoration: none;
+    
   }

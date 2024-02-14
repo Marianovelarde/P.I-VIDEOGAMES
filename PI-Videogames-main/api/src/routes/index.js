@@ -4,19 +4,21 @@ const path = require('path');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const uploadDir = path.join(__dirname,'../../uploads');
-        cb(null, uploadDir);
+      const uploadDir = path.join(__dirname, '../../uploads');
+      cb(null, uploadDir);
     },
     filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
-});
+  });
 
 const upload = multer({ storage: storage })
 
 const {getAllVideogames, 
     getVideogamesById, 
-    createVideogame} = require('../controllers/videoGamesControllers')
+    createVideogame,
+    deleteVideogame, 
+    updateVideogame } = require('../controllers/videoGamesControllers')
 
 const {getAllGenres} = require('../controllers/genresControllers')
 
@@ -36,6 +38,7 @@ router.get('/videogames/:idVideogame', getVideogamesById)
 router.post('/videogame', upload.single('imagen'), createVideogame)
 router.get('/genres', getAllGenres)
 router.get('/plataforms', getPlataforms)
-
+router.delete('/videogames/:id', deleteVideogame)
+router.put('/videogames/:id')
 
 module.exports = router;

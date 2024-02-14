@@ -1,4 +1,4 @@
-
+//Importamos las acciones
 import {
     START_LOADING,
     STOP_LOADING,
@@ -6,12 +6,13 @@ import {
     GET_ALL_VIDEOGAMES,
     GET_VIDEOGAMES_BY_NAME,
     GET_VIDEOGAMES_BY_ID,
-    GET_PLATFORMS ,
-    FILTER_BY_GENRES,
-    FILTER_BY_SOURCE,
+    GET_PLATFORMS,
     FILTER_BY_GENRES_AND_SOURCE,
     ORDER_BY,
-    POST_VIDEOGAMES,} from "./actions"
+    POST_VIDEOGAMES,
+    DELETE_VIDEOGAME,
+    } from "./actions";
+//Declaramos initial state con nuestros estados
 
 const initialState = {
     videogames : [],
@@ -19,8 +20,9 @@ const initialState = {
     genres: [],
     details: [],
     platforms: [],
+    searchVideogame: [],
     loading: false
-}
+};
 const rootReducer =  (state = initialState, action)  => {
     console.log(state);
 
@@ -30,8 +32,6 @@ const rootReducer =  (state = initialState, action)  => {
             ...state,
             videogames: action.payload,
             copyVideogames: action.payload
-
-            
         }
         case GET_VIDEOGAMES_BY_NAME: 
         return {
@@ -56,9 +56,18 @@ const rootReducer =  (state = initialState, action)  => {
         }
         case POST_VIDEOGAMES:
             return {
-                ...state,
-               
+                ...state,      
             }
+        
+            case DELETE_VIDEOGAME:
+                // Filtras los videojuegos para excluir el que se eliminó
+                const updatedVideogames = state.videogames.filter((videogame) => videogame.id !== action.payload);
+                return {
+                  ...state,
+                  videogames: updatedVideogames,
+                };
+             
+              
         case START_LOADING: 
             return {
                 ...state,
@@ -73,16 +82,12 @@ const rootReducer =  (state = initialState, action)  => {
             case FILTER_BY_GENRES_AND_SOURCE:
                 const allVideogames = state.copyVideogames;
                 const { selectedGenre, selectedSource } = action.payload;
-                console.log('Selected Genre:', selectedGenre);
-                console.log('Selected Source:', selectedSource);
                 const filteredVideogames =
                     selectedGenre === 'all'
                         ? allVideogames
                         : allVideogames.filter((el) =>
-                              el.genres ? el.genres.some(genre => genre.name === selectedGenre) : false
+                        el.genres ? el.genres.some(genre => genre.name === selectedGenre) : false
                         );
-                        
-            
                 const videogamesFilteredBySource =
                     selectedSource === 'all'
                         ? filteredVideogames

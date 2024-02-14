@@ -1,10 +1,8 @@
 import  { useEffect, useState } from 'react'
 import { 
     getAllVideogames,
-    getGenres, 
-    filterByGenres, 
+    getGenres,  
     orderBy,
-    filterBySource,
     filterByGenresAndSource } from '../../Redux/actions'
 import { connect } from 'react-redux'
 import styles from '../FiltersAndOrder/styledComponent.module.css'
@@ -24,7 +22,7 @@ const {page} = props
 
     useEffect(()=>{
         props.getGenres()
-        props.filterBySource()
+        
     },[])
 
     const handleFilterGender = (e) => {
@@ -70,10 +68,13 @@ const {page} = props
     }
 
     
+    
+    
     const reset = () => {
         
         props.getAllVideogames()
     }
+    
 
   return (
     <div className={styles.firstContainer}>
@@ -83,7 +84,7 @@ const {page} = props
                 <select className={styles.selectContainer} name="filterByGenres" 
                 value={select.filterByGenres} 
                 onChange={e => handleFilterGender(e)}>
-                    <option key='all' value='all'>all Genres</option>
+                    <option className={styles.option} key='all' value='all'>all Genres</option>
                     {props.genres.map((item) => (
                     <option key={item.name} value={item.name}>{item.name}</option>
                     ))}
@@ -113,22 +114,22 @@ const {page} = props
                 </select>
             <button className={styles.selectContainer} type='button' onClick={reset}>Reset</button>
             </div>
+           
         </section>
     </div>
   )
 }
 
 const mapStateToProps = (state) =>({
-    genres: state.genres
+    genres: state.genres,
+    videogames: state.videogames
     
 })
 
 const mapDispatchToProps = {
     getGenres,
-    filterByGenres,
     getAllVideogames,
     orderBy,
-    filterBySource,
     filterByGenresAndSource
 }
 

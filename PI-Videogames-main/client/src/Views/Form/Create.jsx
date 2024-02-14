@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react'
 import { useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
+import {useNavigate} from 'react-router-dom'
 import { postVideogames, getGenres, getPlatforms } from '../../Redux/actions'
 import styles from './create.module.css'
 
@@ -38,6 +39,7 @@ const validate = (input) => {
    
 const Create = (props) => {
     
+    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const genres = useSelector((state) => state.genres)
@@ -52,7 +54,7 @@ const Create = (props) => {
     rating: '',
     genres: []
     })
-    
+
     const [errors, setErrors] = useState({})
     
 
@@ -68,6 +70,10 @@ useEffect(()=>{
     dispatch(getGenres())
     dispatch(getPlatforms())
 }, [input.plataformas, input.genres])
+
+useEffect(() => {
+    setErrors(validate(input));
+}, [input]);
 
     const handleChange = (e) => {
         const { name, value  } = e.target;
@@ -153,7 +159,7 @@ useEffect(()=>{
                 formData.append('rating', input.rating)
                 
                 formData.append('imagen', input.imagen)
-                console.log(formData.get('plataformas'))
+                console.log(formData.get('imagen'))
                 console.log(formData.get('genres'))
             dispatch(postVideogames(formData))
             console.log('formData2: ', input.plataformas,input.genres);
@@ -167,6 +173,7 @@ useEffect(()=>{
                 genres: [],
                 imagen: null
             })
+            navigate('/home')
                  
         } else {
             alert('Completar los campos')
@@ -180,45 +187,46 @@ useEffect(()=>{
             <form onSubmit={(e) => handleSubmit(e)} encType="multipart/form-data">
             <div className ={styles.formContainer}>
                 <h2>Creá tu videogame</h2>
-
-                <p>nombre del videogame</p>
-                {errors.nombre && <p>{errors.nombre}</p>}
+                <p>Nombre</p>
                 <input 
                 type="text"
                 name='nombre'
                 value={input.nombre}
                 placeholder='Nombre del videogame'
                 onChange={(e) => handleChange(e)}
-                 />
-                 <p>imagen</p>
+                />
+                {errors.nombre && <p className={styles.warning}>{errors.nombre}</p>}
+                 
+                 <p>Imagen</p>
                  <input type="file" name='imagen' onChange={e => handleImagenChange(e)}/>
-                 <p>descripcion</p>
-                 {errors.descripcion && <span>{errors.descripcion}</span>}
 
-                <input 
-                type='text'
-                name='descripcion'
-                 value={input.descripcion}
-                 onChange={(e) => handleChange(e)}/>
+                 <p>Descripcion</p>
+                 <textarea
+                 name='descripcion'
+                value={input.descripcion}
+                onChange={(e) => handleChange(e)}
+                />
+                {errors.descripcion && <p className={styles.warning}>{errors.descripcion}</p>}
 
                  <p>Fecha de lanzamiento</p>
-                 {errors.fecha_de_lanzamiento && <span>{errors.fecha_de_lanzamiento}</span>}
                  <input 
                  type="date"
                  name='fecha_de_lanzamiento'
                  value={input.fecha_de_lanzamiento}
                  onChange={(e) => handleChange(e)}
                   />
+                  {errors.fecha_de_lanzamiento && <p className={styles.warning}>{errors.fecha_de_lanzamiento}</p>}
+
                   <p>Ratings</p>
-                  {errors.rating && <span>{errors.rating}</span>}
                   <input 
                   type="number"
                   name='rating'
                   value={input.rating}
                   onChange={(e) => handleChange(e)}
                   />
+                  {errors.rating && <p className={styles.warning}>{errors.rating}</p>}
+
                  <p>Plataformas</p>
-                 {errors.plataformas && <span>{errors.plataformas}</span>}
                 <select onChange={(e)=> handleSelectPlataforms(e)}>
                     <option value='none'>none</option>
                     {platforms.map((pf)=>(
@@ -227,7 +235,8 @@ useEffect(()=>{
                         </option>
                     ))}
                 </select>
-                <ul>
+                {errors.plataformas && <p className={styles.warning}>{errors.plataformas}</p>}
+                <ul className={styles.ulCombine}>
                     {input.plataformas.map((i,index)=> (
                         <li key={index}>
                             {i}
@@ -239,8 +248,8 @@ useEffect(()=>{
                         
                     ))}
                 </ul>
+
                   <p>Géneros</p>
-                  {errors.genres && <span>{errors.genres}</span>}
                 <select onChange={(e) => handleSelectgenres(e)}>
                   <option value='none'>none</option>
                     {genres.map((genre) => (
@@ -249,16 +258,17 @@ useEffect(()=>{
                         </option>
                     ))}
                 </select>
-                <ul>
+                {errors.genres && <p className={styles.warning}>{errors.genres}</p>}
+                <ul className={styles.ulCombine}>
                     {input.genres.map((i, index) => (
                         <li key={index}>
                             {i}
-                            <button type="button" onClick={() => handleRemoveGenre(index)}>
-                                    Eliminar
+                            <button className={styles.buttonLi} type="button" onClick={() => handleRemoveGenre(index)}>
+                                    x
                                 </button>
                         </li>
                     ))}
-                    <button type='submit'>Enviar</button>
+                    <button type='submit'>Crear Videogame</button>
                 </ul>
             </div>
             </form>

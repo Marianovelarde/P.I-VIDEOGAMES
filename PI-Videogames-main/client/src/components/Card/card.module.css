@@ -46,17 +46,18 @@
     right: 60px;
 }
 
+
   .textCard p {
     display: inline;
     position: relative;
     bottom: 10px;
-   
-    
-
-   
+  }
+  .textCard p b {
+    font-family: 'Chakra Petch', sans-serif;
+    letter-spacing: 1px;
   }
   .textCard strong {
-    font-size: 13px;
+    font-size: 14px;
     display: flex;
     position: relative;
     left: 50px;
@@ -64,6 +65,8 @@
     white-space: nowrap;
     color:black;
     margin-top: 5px;
+    font-family: 'Chakra Petch', sans-serif;
+    letter-spacing: 2px;
   }
 
  

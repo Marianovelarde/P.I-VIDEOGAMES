@@ -3,7 +3,37 @@
     justify-content: center;
     text-align: center;
     align-items: center;
-    color: white;
-   
+    color: peru
 
+    
+}
+.formContainer {
+    background-color: rgba(27, 20, 10, 0.4);
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.formContainer input {
+    
+    padding: 10px;
+    margin-right: 0;
+    margin-top: 16px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.warning {
+    color:red;
+}
+.ulCombine { 
+list-style-type: none;
+};
+
+.buttonLi {
+    /* Estilos específicos para el botón dentro de cada ítem de la lista */
+    /* Puedes agregar estilos adicionales según tus necesidades */
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 5px; /* Ejemplo de margen a la izquierda */
+    cursor: pointer;
 }
