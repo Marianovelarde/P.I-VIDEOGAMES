@@ -3,40 +3,39 @@ require('dotenv').config();
 const {API_KEY} = process.env
 const axios = require('axios')
 
-//CREAMOS UNA FUNCIÓN PARA TRAER LA INFO DE LA API . 
-//DEBE SER FUNCION ASINCRONA 
-//LIMIT PER PAGE :LIMITE DE VIDEOGAMES POR PAGINA
-//TOTAL DE VIDEOGAMES QUE QUIERO TRAER
-//DIVIIDMOS EL TOTAL DE PAGINAS PO LA CANTIDAD DE VIDEOGAMES
+
+//LIMIT PER PAGE: LIMITE DE VIDEOGAMES POR PAGINA
+//TOTALGAMES: CANTIDAD VIDEOGAMES QUE QUIERO TRAER
+//NUMPAGES: DIVIDIMOS EL TOTAL DE PAGINAS PO LA CANTIDAD DE VIDEOGAMES
 //MATH CEIL: REDONDEA EL NUMERO DECIMAL AL NUMERO ENTERO SUPERIOR MAS PROXIMO.
 //ARRAY VACIO PARA ALBERGAR LOS DATOS RECOPILADOS SEGÚN MIS CONDICIONES
 const getDataApi = async () => {
     try {
-        const limitPerPage = 20; //limite de videogames por pagina
-        const totalGames = 100; //número total de videogames que deseo traer.
+        const limitPerPage = 20; 
+        const totalGames = 100; 
         const numPages = Math.ceil(totalGames / limitPerPage); //
         const allGamesDetails = [];
 
-        //iniciamos page en 1 ya que queremos empezar de la primera pagina
+        //inicia page en 1 ya que queremos empezar de la primera pagina
         for (let page = 1; page <= numPages; page++) {
             const URL = `https://api.rawg.io/api/games?key=7758e5ff65454b6ab34b61287c1e829e&page=${page}`;
             
-            const apiGames = await axios.get(URL); //hacemos la solicitud get a la url construida
-            const gamesList = apiGames.data.results; //extraemos la lista de videogames
+            const apiGames = await axios.get(URL); //hago la solicitud get a la url construida
+            const gamesList = apiGames.data.results; //se extrae la lista de videogames
 
             const gamePromises = gamesList.map(async (game) => { //mapeo la lista de juegos
                 const genres = game.genres.map(genre => ({ name: genre.name })); //extraigo el genero por nombre
              
-                //devolvemos lo que necesitamos mostrar en la card principal
+                //devuelvo la información que necesito extraer de la api
                 return {
-                    id: game.id,
+                     id: game.id,
                     name: game.name,             
                     image: game.background_image,
                     genres,
                     rating: game.rating
                 };
             });
-                //aqui esperamos que se cumplan todas las promesas 
+                //aqui esperar a que se cumplan todas las promesas debido a que se hacen múltiples solicitudes 
             const gameDetails = await Promise.all(gamePromises);
             allGamesDetails.push(...gameDetails); //agrega los detalles de videogames al array allGamesDetails
         }
@@ -49,11 +48,6 @@ const getDataApi = async () => {
     }
 };
 
-
-// Llamamos a la función para obtener los detalles de los juegos.
-// getDataApi()
-//     .then(data => console.log(data))
-//     .catch(error => console.error(error));
 
 const getDataApiGenres = async () => {
     //consulta para obtener la información de los géneros
@@ -74,19 +68,27 @@ const getDataApiGenres = async () => {
    
 }
 
-const getPlataforms = async (req,res) => {
-    const apiPlataforms = await axios.get(`https://api.rawg.io/api/platforms/lists/parents?key=7758e5ff65454b6ab34b61287c1e829e`)
-    const plataformsName = apiPlataforms.data.results.map(p => {
-        return {
-            id:p.id,
-            name:p.name
-        }
-    })
-    res.send(plataformsName)
+const getPlatforms = async (req,res) => {
+    try {
+            let apiPlatforms = await axios.get(`https://api.rawg.io/api/platforms/lists/parents?key=7758e5ff65454b6ab34b61287c1e829e`)
+            let platformsName = apiPlatforms.data.results.map(p => {
+                return {
+                    id:p.id,
+                    name:p.name
+                }
+            })
+
+            return platformsName
+        
+    } catch (error) {
+        res.status(500).send('Error al obtener datos de plataforma desde la api: ', error.message)
+        console.error('Error al obtener lista de plataformas desde getDataApi: ', error.message)
+    }
+   
 }
 
 module.exports = {
     getDataApi,
     getDataApiGenres,
-    getPlataforms
+    getPlatforms
 }

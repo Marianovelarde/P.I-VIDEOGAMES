@@ -17,7 +17,7 @@ const {API_KEY} = process.env
     return uuidRegex.test(id);
   }
 
-  //mostrar la información extraida de la api y de la base de datos
+
   const getAllVideogames = async (req, res) => {
     try {
       //Extraemos el nombre 
@@ -66,30 +66,30 @@ const {API_KEY} = process.env
       //variable vacia para trabajar con la info de la api
       let dataVideogamesApi;
   
-      // Si no se proporciona un nombre, obtengo todos los videojuegos de la API
+      //Si no se solicita videogame por nombre, se solicita toda la información disponible: 
       if (!name) {
         dataVideogamesApi = await utils.getDataApi();
-        //si se proporciona nombre se busca en la url 
+        //si  se proporciona nombre se utiliza el endpoint proporcionado
       } else {
         const dataByName = await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=15&search=${name}`);
-         // Mapear los resultados para formatear la respuesta. 
-        dataVideogamesApi = dataByName.data.results.map((game) => {
-          const genres = game.genres.map((genre) => ({ name: genre.name }));
-          return {
-            id: game.id,
-            name: game.name,
-            image: game.background_image,
-            genres,
-            rating: game.rating,
-          };
-        });
+        // Mapear los resultados para formatear la respuesta. 
+       dataVideogamesApi = dataByName.data.results.map((game) => {
+         const genres = game.genres.map((genre) => ({ name: genre.name }));
+         return {
+           id: game.id,
+           name: game.name,
+           image: game.background_image,
+           genres,
+           rating: game.rating,
+         };
+       });
       }
   
-      // Combina los datos de la base de datos y la API filtrados
+      // concatenamos los datos de la base de datos y la API 
       const allData = dataDb.concat(dataVideogamesApi);
   
        // Filtrar los resultados si se proporciona un nombre en la consulta.
-       //INCLUDES: determina si un array incluye un determinado elemento, devolviendo true o false
+      
       if (name) {
         const response = allData.filter((el) => el.name.toLowerCase().includes(name.toLowerCase()));
   
@@ -101,18 +101,20 @@ const {API_KEY} = process.env
       }
       res.status(200).send(allData);
     } catch (error) {
-      console.error('Error: ', error.message);
-      res.status(500).send('Error interno en el servidor: ', error.message);
+      res.status(500).send('Error interno en el servidor y la solicitud no pudo ser procesada: ');
+      console.error('Error en getAllVideogame: ', error.message);
     }
   };
   
 
 
 const getVideogamesById = async (req, res) => {
-//extraemos el id
+
     const { idVideogame } = req.params;
 
-  //verificamos si el ID es identificador unico universal para la info de la bdd
+    //Solicitar información sobre un id en especifico para mostrar los detalles del videogame en cuestión.
+
+  //verificamos si el ID es identificador unico universal 
 
     try {
         if (esUUID(idVideogame)) {
@@ -136,7 +138,7 @@ const getVideogamesById = async (req, res) => {
                 return res.status(404).send('No se encuentra videogames con ese id');
             }
         } else {
-          //si no hay un id que coincida con la info de la base de datos entonces busco la info en la api
+          //si no hay un id en la respuesta de la solicitud a de la base de datos entonces busco la info en la api
           //end point para buscar por id
             const URL = `https://api.rawg.io/api/games/${idVideogame}?key=${API_KEY}`;
             
@@ -144,7 +146,7 @@ const getVideogamesById = async (req, res) => {
             const apiResponse = await axios.get(URL);
             const gameDetails = apiResponse.data;
 
-            // Extraer la información necesaria de la API
+            // Extraer la información de detalles necesaria de la API
             const response = {
                 id: gameDetails.id,
                 nombre: gameDetails.name,
@@ -156,15 +158,15 @@ const getVideogamesById = async (req, res) => {
                 genres: gameDetails.genres.map(genre => ({ name: genre.name }))
             };
 
-            return res.json(response);
+            return res.status(200).send(response);
         }
     } catch (error) {
-        console.error('Error ', error);
-        return res.status(500).send('Error interno del servidor');
-    }
+      console.error('Error en getById ', error.message);
+      return res.status(500).send('Error interno en el servidor y la solicitud no pudo ser procesada: ');
+    };
 };
 //Funcion para crear información: 
-//recibimos datos recibidos del cuerpo de la solicitud. 
+//recibimos datos  del cuerpo de la solicitud. 
 const createVideogame = async (req, res) => {
     const {
         nombre,
@@ -177,12 +179,11 @@ const createVideogame = async (req, res) => {
         //estos datos recibidos son convertidos de un cadena JSON a un objeto js
         const plataformas = JSON.parse(req.body.plataformas);
         const genres = JSON.parse(req.body.genres);
-        console.log(imagenURL);
-        console.log(req.body);
+        
 
     try {
       /*Creación de un nuevo VIDEOGAME en la base de datos.
-        - Utilizamos el model Videogame para crear un nuevo registro en la base de datos con los datos proporcionados
+        
       */
         let gameCreate = await Videogame.create({
             nombre,
@@ -192,28 +193,14 @@ const createVideogame = async (req, res) => {
             fecha_de_lanzamiento,
             rating,
         });
-        /* 
-          asociación de generos al videogame: 
-          busca o crea el genero  en la base de datos
-          asocia el género al nuevo videogame creado
-          1_ verificamos si hay generos proporcionados en la solicitud. Si genres.length es mayor que 0, significa que hay generos disponibles para asociar al videogame
-          2_ mapeo con genres.map 
-           - utilizo el método .map para iterar sobre cada elemento de genres
-           - cada elemento g representa un genero del videogame
-          3_ creación o busqueda del género
-            - utiliza el método Genres para buscar o crear un nuevo genero en la base de datos.
-            - findOrCreate: busca un género con el nombre  proporcionado en la base de datos. Si no lo encuentra lo crea automaticamente.
-          4_ asociación del genero:
-            - una vez encontrado o creado el genero se utiliza el método addGenres() para asociar el genero al videogame
-            - genre[0] es  el primer elemento del array devuelto por findOrCreate que contiene el genero encontrado o creado
-        */
+      
         if (genres.length) {
           genres.map(async (g) => {
             try {
               let genre = await Genres.findOrCreate({ where: { nombre: g } });
               gameCreate.addGenres(genre[0]);
-            } catch (err) {
-              console.log('Error al asociar genero: ', err.message);
+            } catch (error) {
+              console.log('Error al asociar genero: ', error.message);
             }
           });
         }
