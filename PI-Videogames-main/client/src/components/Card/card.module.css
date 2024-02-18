@@ -58,14 +58,14 @@
   }
 
 .textCard strong {
-    font-size: 14px;
+    font-size: 12px;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     white-space: nowrap; /* Evita el Salto de línea*/
     color:black;
     margin-top: 5px;
     font-family: 'Chakra Petch', sans-serif;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
   }
 
  
