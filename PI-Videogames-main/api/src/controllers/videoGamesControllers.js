@@ -45,6 +45,7 @@ const {API_KEY} = process.env;
           name: vg.nombre,
           image: vg.imagen,
           genres: Array.isArray(vg.genres) ? vg.genres.map((i) => ({ name: i.nombre })) : [],
+          rating: vg.rating
         }));
       } else {
         /*
@@ -60,6 +61,7 @@ const {API_KEY} = process.env;
           name: vg.nombre,
           image: vg.imagen,
           genres: Array.isArray(vg.genres) ? vg.genres.map((i) => ({ name: i.nombre })) : [],
+          rating: vg.rating
         }));
       };
   
@@ -192,9 +194,9 @@ const createVideogame = async (req, res) => {
             rating,
         });
       //si género tiene disponible un elemento entonces: 
-      //Mapeo e
+      
         if (genres.length) {
-          //mapeo y funcion async para extraer el g(genero)
+          //mapeo en una funcion async para extraer el género
           genres.map(async (g) => {
             try {
               //Lo buscamos, si no se encuentra lo creamos.
