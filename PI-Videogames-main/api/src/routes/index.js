@@ -40,6 +40,4 @@ router.post('/videogame', upload.single('imagen'), createVideogame);
 router.get('/genres', getAllGenres);
 router.get('/platforms', getAllPlatforms);
 router.delete('/videogames/:id', deleteVideogame);
-router.put('/videogames/:id');
-
 module.exports = router;

@@ -1,23 +1,23 @@
-//traemos el modulo de axios para buscar por nombre y por id
-const axios = require('axios')
+//Axios para hacer las solicitudes/promesas.
+const axios = require('axios');
 //variable de entorno
-require('dotenv').config()
+require('dotenv').config();
 //traigo la info de la api
 const utils = require('../utils/getDataApi')
 //traigo la información de los models
 const {Videogame, Genres} = require('../db');
 const { Sequelize, Op, iLike } = require('sequelize');
 
-const {API_KEY} = process.env
+const {API_KEY} = process.env;
 
-// Un UUID es un identificador único; personalmente lo uso para generar cadenas aleatorias y criptográficamente seguras.
+// Un UUID es un identificador único para generar cadenas aleatorias y criptográficamente seguras.
 //esta función valida si una cadena sigue el formato uuid
   const esUUID = (id) =>{
     const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
     return uuidRegex.test(id);
-  }
+  };
 
-
+//Función Principal
   const getAllVideogames = async (req, res) => {
     try {
       //Extraemos el nombre 
@@ -61,7 +61,7 @@ const {API_KEY} = process.env
           image: vg.imagen,
           genres: Array.isArray(vg.genres) ? vg.genres.map((i) => ({ name: i.nombre })) : [],
         }));
-      }
+      };
   
       //variable vacia para trabajar con la info de la api
       let dataVideogamesApi;
@@ -157,9 +157,9 @@ const getVideogamesById = async (req, res) => {
                 rating: gameDetails.rating,
                 genres: gameDetails.genres.map(genre => ({ name: genre.name }))
             };
-
+//Retornamos el objeto con la información
             return res.status(200).send(response);
-        }
+        };
     } catch (error) {
       console.error('Error en getById ', error.message);
       return res.status(500).send('Error interno en el servidor y la solicitud no pudo ser procesada: ');
@@ -174,16 +174,14 @@ const createVideogame = async (req, res) => {
         fecha_de_lanzamiento,
         rating,
          } = req.body;
-         //Nombre del archivo subido
-        const imagenURL  = req.file.filename;
-        //estos datos recibidos son convertidos de un cadena JSON a un objeto js
+        const imagenURL  = req.file.filename; //extraer la url de la imagen 
+        //estos datos recibidos son convertidos(parse) de un cadena JSON a un objeto js
         const plataformas = JSON.parse(req.body.plataformas);
         const genres = JSON.parse(req.body.genres);
         
 
     try {
-      /*Creación de un nuevo VIDEOGAME en la base de datos.
-        
+      /*Creación de un nuevo VIDEOGAME, su relación y asociación de género en la base de datos.
       */
         let gameCreate = await Videogame.create({
             nombre,
@@ -193,59 +191,49 @@ const createVideogame = async (req, res) => {
             fecha_de_lanzamiento,
             rating,
         });
-      
+      //si género tiene disponible un elemento entonces: 
+      //Mapeo e
         if (genres.length) {
+          //mapeo y funcion async para extraer el g(genero)
           genres.map(async (g) => {
             try {
+              //Lo buscamos, si no se encuentra lo creamos.
               let genre = await Genres.findOrCreate({ where: { nombre: g } });
+              //Asociamos al juego creado el primer elemento(encontrado o asociado)
               gameCreate.addGenres(genre[0]);
             } catch (error) {
               console.log('Error al asociar genero: ', error.message);
-            }
+            };
           });
-        }
+        };
         res.status(201).send(gameCreate);
-        console.log(gameCreate);
     } catch (error) {
-        res.status(500).send('Error interno en el servidor');
-        console.error('Error en la consola de create: ', error.message);
-    }
+        res.status(500).send('Error interno en el servidor y la solicitud no pudo ser procesada');
+        console.error('Error en la funcion createVideogame: ', error.message);
+    };
 };
 
-//controlador Node para la eliminación de videogames
-/*
-  extraemos el id por params. 
-  buscamos la primera coincidencia
-  si no se encuentra. devolvemos status 404
-  eliminamos la asociación con el genero
-  destruimos el videogame con where: id
-*/
+//Controlador de ruta para eliminar videogame y su relación.
 const deleteVideogame = async (req,res) => {
-  const {id} = req.params
+  //Se extrae el id
+  const {id} = req.params;
 
   try {
-    const videogame = await Videogame.findByPk(id)
+    //Buscamos la primera entrada que coincida con id
+    const videogame = await Videogame.findByPk(id);
     if(!videogame) {
-      res.status(404).send('No se pudo eliminar el videogame')
-    }
-    
+      res.status(404).send('No se pudo eliminar el videogame');
+    };
+    //eliminamos la relación
     await videogame.removeGenres();
-    
-    await Videogame.destroy({where: {id} })
-    res.status(200).send('El videogame ha sido eliminado exitosamente de la base de datos.')
+    //Eliminamos el videogame
+    await Videogame.destroy({where: {id} });
+    res.status(200).send('El videogame ha sido eliminado exitosamente de la base de datos.');
   } catch (error) {
-    console.error('Error interno al eliminar: ', error.message)
-    res.status(500).send('Error al eliminar videogame: ', error.message)
-  }
-}
-
-
-/* 
-  Manejo de Errores y Respuesta:
-  Si se crea exitosamente el nuevo videojuego, devuelve el objeto creado con el estado HTTP 201 (Created).
-
-  Si ocurre algún error durante el proceso de creación, devuelve un mensaje de error con el estado HTTP 500 (Internal Server Error) y registra el error en la consola.
-*/
+    console.error('Error interno al eliminar: ', error.message);
+    res.status(500).send('Error al eliminar videogame: ', error.message);
+  };
+};
 
 module.exports = {
     getAllVideogames,
