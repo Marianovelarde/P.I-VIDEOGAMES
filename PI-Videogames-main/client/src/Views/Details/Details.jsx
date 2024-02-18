@@ -2,24 +2,27 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { getVideogamesById, startLoading, stopLoading, deleteVideogame } from '../../Redux/actions';
+import { getVideogamesById, deleteVideogame } from '../../Redux/actions';
 import cargador from '../../assets/police-car-82.gif';
 import styles from './details.module.css';
 
 const Details = (props) => {
-  //Extraemos el id que está vinculado con la card seleccionada desde home
+  //Extraemos el id que está vinculado a la card seleccionada desde home
+
   const { id } = useParams();
+
   const navigate = useNavigate();
 
-  const { details, getVideogamesById, startLoading, stopLoading, loading, deleteVideogame } = props;
+  const { details, getVideogamesById, loading, deleteVideogame } = props;
   
+  const {nombre, descripcion, imagen, fecha_de_lanzamiento, rating, plataformas,genres} = details;
+
   const [isUuid, setIsUuid] = useState(false);
  
-//useEffect para montar el loading
+
   useEffect(() => {
-    startLoading();
-    getVideogamesById(id).finally(() => stopLoading());
-  }, [id, getVideogamesById, startLoading, stopLoading]);
+    getVideogamesById(id);
+  }, []);
 
   useEffect(() => {
     // Verificamos si el ID es un UUID
@@ -36,11 +39,20 @@ const Details = (props) => {
   const handleDelete = async () => {
     try {
       await deleteVideogame(id);
+      alert('Videogame eliminado con éxito.')
       navigate('/home');
     } catch (error) {
       console.error('Error al eliminar el videojuego:', error);
     }
   };
+  const createMarkup = () => {
+    return { __html: descripcion };
+};
+const toHome = (e) => {
+e.preventDefault()
+navigate('/home')
+
+}
 /*
 En los elementos jsx tenemos 3 cuestiones particulares 
 1_ es el loading si el loading se encuentra en false: me muestra la imagen de cargando, si se el valor muestra true, me renderiza los detalles.
@@ -53,23 +65,28 @@ En los elementos jsx tenemos 3 cuestiones particulares
         <img className={styles.imageGif} src={cargador} alt="Cargando" />
       ) : (
         <>
-          <h1>{details.nombre}</h1>
+          <h1>{nombre}</h1>
 
-          {details && details.imagen && details.imagen.includes('http') ? (
-           <img className={styles.imgDetail} src={details.imagen} alt={details.nombre} />
+          {details &&  imagen && imagen.includes('https') ? (
+           <img className={styles.imgDetail} src={imagen} alt={nombre} />
           ) : (
-            <img className={styles.imgDetail} src={`http://localhost:3001/uploads/${details.imagen}`} alt={details.nombre} />
-)}
-          <p>Descripción: {details.descripcion}</p>
-          <p>Fecha de Lanzamiento: {details.fecha_de_lanzamiento}</p>
-          <p>Rating: {details.rating}</p>
-          <p>Plataformas: {details.plataformas && details.plataformas.join(', ')}</p>
-          <p>Géneros: {details.genres && details.genres.map((genre) => genre.name).join(', ')}</p>
+            <img className={styles.imgDetail} src={`http://localhost:3001/uploads/${imagen}`} alt={nombre} />)}
+
+          {descripcion && descripcion.includes('<') ? (
+            <div dangerouslySetInnerHTML={createMarkup()} />
+          ) : (
+            // Renderiza el texto plano si no viene en formato HTML
+            <p>Descripción: {descripcion}</p>
+          )}
+          <p>Fecha de Lanzamiento: {fecha_de_lanzamiento}</p>
+          <p>Rating: {rating}</p>
+          <p>Plataformas: {plataformas && plataformas.join(', ')}</p>
+          <p>Géneros: {genres && genres.map((genre) => genre.name).join(', ')}</p>
 
           {/* Renderiza los campos de actualización si el ID es un UUID */}
           {isUuid && (
             <>
-             <button onClick={handleDelete}>Eliminar</button>
+             <button className={styles.buttonDetails} onClick={handleDelete}>Eliminar</button>
               {/* Agrega más campos de actualización según sea necesario */}
 
               
@@ -77,9 +94,9 @@ En los elementos jsx tenemos 3 cuestiones particulares
           )}
 
           
-          <Link to="/home">
-            <button>Volver</button>
-          </Link>
+          
+            <button onClick={(e) => toHome(e)} className={styles.buttonDetails}>Volver</button>
+          
         </>
       )}
     </div>
@@ -93,8 +110,6 @@ const mapStateToProps = (state) => ({
 //traemos las funciones de actions 
 const mapDispatchToProps = {
   getVideogamesById,
-  startLoading,
-  stopLoading,
   deleteVideogame,
 };
 

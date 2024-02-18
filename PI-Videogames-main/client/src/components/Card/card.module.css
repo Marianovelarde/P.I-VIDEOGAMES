@@ -1,7 +1,6 @@
 .containerCard {
     display: flex;
     justify-content: space-between;
-    
     border: 1px solid black;
     border-radius: 5px;
     box-sizing: border-box;
@@ -15,10 +14,8 @@
     box-shadow: 2px 2px 4px 4px rgba(227, 209, 252, 1);
     overflow: hidden;
     z-index: 1;
-    
-    
-    
 }
+
 .containerCard img {
     display: flex;
     position: relative;
@@ -34,35 +31,37 @@
     border-radius: 1px solid black;
     object-fit: cover;
   }
-  .containerCard:hover{
+
+.containerCard:hover{
     background-color: rgb(255, 162, 41, 0.6);
     transition: background-color 0.5s;
   }
-  .textCard {
-    padding: 10px; /* Añade algún relleno al contenedor de texto */
+
+.textCard {
+    padding: 10px; 
     font-size: 14px;
     position: relative;
     bottom: 25px;
     right: 60px;
+    width: 200px;
 }
 
-
-  .textCard p {
+.textCard p {
     display: inline;
-    position: relative;
-    bottom: 10px;
+   
   }
+
   .textCard p b {
     font-family: 'Chakra Petch', sans-serif;
     letter-spacing: 1px;
+
   }
-  .textCard strong {
+
+.textCard strong {
     font-size: 14px;
     display: flex;
-    position: relative;
-    left: 50px;
     justify-content: space-around;
-    white-space: nowrap;
+    white-space: nowrap; /* Evita el Salto de línea*/
     color:black;
     margin-top: 5px;
     font-family: 'Chakra Petch', sans-serif;

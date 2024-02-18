@@ -1,11 +1,11 @@
-import React from 'react'
-import Card from '../Card/Card'
-import styles from './cards.module.css'
+import React from 'react';
+import Card from '../Card/Card';
+import styles from './cards.module.css';
 const Cards = (props) => {
 
     const {videogames} = props
-//se recibe por props videogames que es un nuevo array con el start y el end index
-
+//se recibe por props videogames (currentPage) 
+//mapeamos  videogames y luego retornamos una card por cada elemento con la información necesaria.
   return (
     <div className={styles.cardsContainer}>
         {videogames.map((vg) => {
@@ -18,10 +18,10 @@ const Cards = (props) => {
                 genres={vg.genres}
                 rating={vg.rating}  
                 />
-            )
-        })}
+            );
+        })};
     </div>
-  )
-}
+  );
+};
 
-export default Cards
+export default Cards;

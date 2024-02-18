@@ -1,0 +1,56 @@
+.detailsContainer {
+    text-align: center;
+    color: white;
+}
+.detailsContainer h1 {
+    text-align: center;
+    font-family: 'videogame2', sans-serif;
+    letter-spacing: 5px;
+    color:white;
+    text-shadow: 4px 4px 4px rgb(83, 30, 228);
+}
+.imgDetail {
+    display: flex;
+    position: relative;
+    left: 400px;
+    width: 500px;
+    border: 1px solid black;
+    border-radius: 10px ;
+}
+.imageGif {
+    margin-left: 50px;
+    border-radius: 10px;
+    height: 30%;
+    width: 70%;
+  
+}
+.buttonDetails {
+    
+    margin-left: 20px;
+    margin-bottom: 10px;
+    color: black;
+    background-color: violet;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(148, 87, 235, 0.5); /* Cambia el color de la sombra a violeta */
+    height: 25px;
+    border: 1px solid black;
+    border-radius: 10px; 
+}
+
+.buttonDetails:hover { 
+    background-color: #8a2be2; 
+    color: #fff; 
+    box-shadow: 0 4px 8px rgba(148, 87, 235, 0.7); 
+    cursor: pointer;
+}
+
+.detailsContainer p {
+    font-family: 'Chakra Petch', sans-serif;
+}
+
+@media(max-width: 900px) {
+
+.imgDetail {
+    margin-left: -230px;
+}
+}

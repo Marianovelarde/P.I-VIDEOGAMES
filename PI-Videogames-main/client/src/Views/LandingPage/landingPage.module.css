@@ -19,7 +19,9 @@
 .firstContainer button {
     font-family: 'videogame2', sans-serif;
     font-size: 24px;
-    background-color: #e77bba;
+    background-color: violet;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(148, 87, 235, 0.5);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -29,5 +31,7 @@
 }
 
 .firstContainer button:hover {
-    background-color: #770594;
+    background-color: #8a2be2; 
+    color: #fff; 
+    box-shadow: 0 4px 8px rgba(148, 87, 235, 0.7); /* Ajusta la sombra al pasar el ratón */
 }

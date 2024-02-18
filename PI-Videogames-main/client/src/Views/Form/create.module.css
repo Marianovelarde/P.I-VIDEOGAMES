@@ -3,22 +3,60 @@
     justify-content: center;
     text-align: center;
     align-items: center;
-    color: peru
-
+    color: peru;
+    font-family: 'Chakra Petch', sans-serif;
     
+}
+.formContainer button {
+    font-family: 'Chakra Petch', sans-serif;;
+    margin-right: 40px;
+    margin-top: 5px;
+    background-color: peru;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(148, 87, 235, 0.5); /* Cambia el color de la sombra a violeta */
+    height: 25px;
+    border: 1px solid black;
+    border-radius: 10px; 
+}
+.formContainer button:hover {
+    background-color: #b68e0b; 
+    color: #fff; 
+    box-shadow: 0 4px 8px rgba(181, 149, 226, 0.7); /* Ajusta la sombra al pasar el ratón */
+    cursor: pointer;
+
 }
 .formContainer {
     background-color: rgba(27, 20, 10, 0.4);
     border: 1px solid black;
     border-radius: 5px;
 }
+.formContainer textarea:hover {
+    background-color: peru;
+    
+}
 .formContainer input {
     
-    padding: 10px;
+    font-family: 'Chakra Petch', sans-serif;
+    padding: 5px;
     margin-right: 0;
-    margin-top: 16px;
+    margin-top: 10px;
     border: 1px solid black;
     border-radius: 5px;
+}
+.formContainer input:hover {
+    background-color: peru;
+    color: black;
+}
+.formContainer select {
+    padding: 5px;
+    margin-right: 0;
+    margin-top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+
+}
+.formContainer select:hover {
+    background-color: peru;
 }
 .warning {
     color:red;
@@ -27,13 +65,3 @@
 list-style-type: none;
 };
 
-.buttonLi {
-    /* Estilos específicos para el botón dentro de cada ítem de la lista */
-    /* Puedes agregar estilos adicionales según tus necesidades */
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    margin-left: 5px; /* Ejemplo de margen a la izquierda */
-    cursor: pointer;
-}

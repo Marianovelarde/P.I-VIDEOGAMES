@@ -1,29 +1,25 @@
-import  { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react';
 import { 
-    getAllVideogames,
-    getGenres,  
+    getAllVideogames,  
     orderBy,
-    filterByGenresAndSource } from '../../Redux/actions'
-import { connect } from 'react-redux'
-import styles from '../FiltersAndOrder/styledComponent.module.css'
+    filterByGenresAndSource, 
+    getGenres } from '../../Redux/actions';
+import { connect } from 'react-redux';
+import styles from './filtersAndOrder.module.css';
 
 const FiltersAndOrder = (props) => {
 
-const {page} = props
-//Botones/Opciones para filtrar por género, y por si su origen es de la API o de la base de datos (creados por nosotros desde el formulario).
-// Botones/Opciones para ordenar tanto ascendentemente como descendentemente los videojuegos por orden alfabético y por rating.
+const {page} = props;
+
     const [select, setSelect] = useState({
         filterByGenres: 'all',
         filterBySource: 'all',
         orderBy: 'orderNone'
-    })
+    });
     
-   
-
-    useEffect(()=>{
-        props.getGenres()
-        
-    },[])
+    useEffect(() => {
+        props.getGenres();
+    },[]);
 
     const handleFilterGender = (e) => {
         const {value} = e.target
@@ -31,21 +27,21 @@ const {page} = props
         setSelect({
             ...select,
             filterByGenres: value
-        })
-        props.filterByGenresAndSource(value)
-        page(1)
-    }
+        });
+        props.filterByGenresAndSource(value);
+        page(1);
+    };
     const handleSource = (e) => {
-        const {value} = e.target
-        console.log(value);
+        const {value} = e.target;
+       
         setSelect({
           ...select,
           filterBySource: value,
-        })
+        });
        
-        page(1)
+        page(1);
         props.filterByGenresAndSource(select.filterByGenres, value);    
-    }
+    };
 
     const handleOrder = async (e) => {
         const { value } = e.target;    
@@ -65,22 +61,31 @@ const {page} = props
             props.orderBy(value);
         }
         page(1);
-    }
+    };
 
     
-    
-    
-    const reset = () => {
-        
+    const reset = (e) => {
+        e.preventDefault()
+        setSelect({
+            filterByGenres: 'all',
+            filterBySource: 'all',
+            orderBy: 'orderNone'
+        });
+        props.filterByGenresAndSource('all', 'all');
+        props.orderBy('orderNone'); 
+        page(1);
         props.getAllVideogames()
-    }
+      
+    };
     
-
+    
+   
   return (
     <div className={styles.firstContainer}>
         <section className={styles.sectionFo}>
             <div>
-                <p>filter By Genres</p>
+                         {/* Filtrado por géneros*/}
+                <p>Filter By Genres:</p>
                 <select className={styles.selectContainer} name="filterByGenres" 
                 value={select.filterByGenres} 
                 onChange={e => handleFilterGender(e)}>
@@ -90,8 +95,10 @@ const {page} = props
                     ))}
                 </select>
             </div>
+
             <div>
-                <p>Filter by Source</p>
+                             {/*Filtrado Por fuente */}
+                <p>Filter by Source:</p>
                 <select className={styles.selectContainer} name="filterBySource"
                 value={select.filterBySource}
                 onChange={(e) => handleSource(e)}>
@@ -100,8 +107,10 @@ const {page} = props
                     <option value="db">From Db</option>
                 </select>
             </div>
+
             <div>
-                <p>Ordenar por:</p>
+                    {/*Ordenamiento a-z z-a rating asc- rating desc*/}
+                <p>Order By:</p>
                 <select className={styles.selectContainer} name="orderBy" value={select.orderBy} onChange={e => handleOrder(e)}>
                     <option value="orderNone">-</option>
                     <option value="videogameAsc">Videogames (A - Z)</option>
@@ -109,8 +118,8 @@ const {page} = props
                 </select>
                 <select className={styles.selectContainer} name="orderBy" value={select.orderBy} onChange={e => handleOrder(e)}>
                     <option value="orderNone">-</option>
-                    <option value="ratingAsc">Rating asc</option>
-                    <option value="ratingDesc">Rating desc</option>
+                    <option value="ratingAsc">+ Rating</option>
+                    <option value="ratingDesc">- Rating</option>
                 </select>
             <button className={styles.selectContainer} type='button' onClick={reset}>Reset</button>
             </div>
@@ -124,13 +133,13 @@ const mapStateToProps = (state) =>({
     genres: state.genres,
     videogames: state.videogames
     
-})
+});
 
 const mapDispatchToProps = {
-    getGenres,
     getAllVideogames,
     orderBy,
-    filterByGenresAndSource
-}
+    filterByGenresAndSource,
+    getGenres
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(FiltersAndOrder)
+export default connect(mapStateToProps, mapDispatchToProps)(FiltersAndOrder);

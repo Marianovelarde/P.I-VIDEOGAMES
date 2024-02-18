@@ -5,14 +5,14 @@ import SearchBar from '../../components/SearchBar/SearchBar'
 import { Link } from 'react-router-dom';
 
 const NavBar = (props) => {
-  const {page} = props
+
   return (
     <div className={styles.containerNav}>
       <header>
         <div className={styles.searchBar}>
-            <SearchBar page={page}/>
+            <SearchBar/>
         </div>
-        <h1>Videogames P.I soy Henry.</h1>
+        <h1>Videogames P.I</h1>
         <main>
           <div className={styles.menuControllers}>
             <input type="checkbox" id="menu-toggle" className={styles.menuToggle} />
@@ -37,5 +37,6 @@ const NavBar = (props) => {
     </div>
   );
 };
+
 
 export default NavBar;

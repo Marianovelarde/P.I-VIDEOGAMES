@@ -17,9 +17,6 @@
     color:white;
     text-shadow: 4px 4px 4px rgb(83, 30, 228);
 }
-/* navbar.module.css */
-
-/* navbar.module.css */
 
 .menuControllers {
     position: relative;
@@ -102,4 +99,24 @@
   .link {
     text-decoration: none;
     
+  }
+  @media(max-width: 900px) {
+    .menuIcon img {
+      position: relative;
+      top: 30px;
+    }
+
+.containerNav h1 {
+   font-size: 20px;
+   text-align: start;
+}
+.menuList {
+  margin-top: 41px;
+  height: 250px;
+  width: 100px;
+}
+.menuList li {
+  font-size: 20px;
+  margin-bottom: 50px;
+}
   }

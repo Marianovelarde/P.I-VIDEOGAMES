@@ -1,50 +1,58 @@
 
-import React, { useEffect } from 'react'
-import { useState } from "react"
-import { useDispatch, useSelector } from 'react-redux'
-import {useNavigate} from 'react-router-dom'
-import { postVideogames, getGenres, getPlatforms } from '../../Redux/actions'
-import styles from './create.module.css'
+import React, { useEffect } from 'react';
+import { useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import {useNavigate} from 'react-router-dom';
+import { postVideogames, getGenres, getPlatforms } from '../../Redux/actions';
+import styles from './create.module.css';
 
+
+//Funcion para validar los campos 
 const validate = (input) => {
-      let errors = {}
+      let errors = {};
+
     if(!input.nombre) {
       errors.nombre = 'El nombre es requerido';
-    }
+    };
   
     if(!input.descripcion) {
       errors.descripcion = 'La descripción es requerida'; 
-    }
+    };
   
     if(!input.fecha_de_lanzamiento) {
       errors.fecha_de_lanzamiento = 'La fecha de lanzamiento es requerida';
-    }
+    };
   
     if(input.rating <= 0 || input.rating > 10) {
       errors.rating = 'El rating es requerido (1 Min - Max 10)';
-    }
+    };
   
     if(input.plataformas.length === 0) {
       errors.plataformas = 'Debe seleccionar al menos una plataforma';
-    }
+    };
   
     if(input.genres.length === 0) { 
       errors.genres = 'Debe seleccionar al menos un género';
-    }
+    };
   
    
   
-    return errors
-  }
+    return errors;
+  };
    
-const Create = (props) => {
+const Create = () => {
     
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
+    //UseNavigate para redireccionar a home
+    const navigate = useNavigate();
 
-    const genres = useSelector((state) => state.genres)
-    const platforms = useSelector((state) => state.platforms)
+    //Despachar accion 
+    const dispatch = useDispatch();
     
+    //traemos el estado genres y platforms
+    const genres = useSelector((state) => state.genres);
+    const platforms = useSelector((state) => state.platforms);
+    
+    //variables de estado
     const [input, setInput] = useState({
     nombre: '',
     imagen: null,
@@ -53,28 +61,33 @@ const Create = (props) => {
     fecha_de_lanzamiento: '',
     rating: '',
     genres: []
-    })
+    });
 
-    const [errors, setErrors] = useState({})
+    //Variables de estado para errores
+    const [errors, setErrors] = useState({});
     
-
+    //Controlador de cambio para la imagen
     const handleImagenChange = (e) => {
         const file = e.target.files[0];
         setInput({
             ...input,
             imagen: file
-        })
+        });
        
     };
+    
+    //Realizamos un efecto secundario para mostrar la lista de genres y platform y enviar accion al store
 useEffect(()=>{
     dispatch(getGenres())
     dispatch(getPlatforms())
-}, [input.plataformas, input.genres])
+}, [input.plataformas, input.genres]);
 
+//ejecuta la función validate(input) cada vez que el estado input cambia.
 useEffect(() => {
     setErrors(validate(input));
 }, [input]);
 
+//Controlador de cambio
     const handleChange = (e) => {
         const { name, value  } = e.target;
         
@@ -87,13 +100,12 @@ useEffect(() => {
                 ...input,
                 [name]: value
             
-            }))
-        }
+            }));
+        };
 
-    
-    const handleSelectPlataforms = (e) => {
-        const {value} = e.target
-        console.log(value);
+        //Controlador de cambio del select de plataformas
+    const handleSelectPlatforms = (e) => {
+        const {value} = e.target;
         if (value !== 'none' && !input.plataformas.includes(value)) {
             setInput({
               ...input,
@@ -102,14 +114,13 @@ useEffect(() => {
         
             setErrors({
               ...errors,
-              plataformas: '', // Limpiamos el error cuando se selecciona una plataforma
+              plataformas: '', 
             });
           }
         };
-
+        //Controlador de cambio del select genero
     const handleSelectgenres = (e) => {
         const { value } = e.target;
-        console.log(value);
        
         if (value !== 'none' && !input.genres.includes(value)) {
             setInput({
@@ -119,10 +130,11 @@ useEffect(() => {
         
             setErrors({
               ...errors,
-              genres: '', // Limpiamos el error cuando se selecciona un género
+              genres: '', 
             });
           }
         };
+        //función para eliminar una plataforma de la lista
     const handleRemovePlatform = (index) => {
         const newPlatforms = [...input.plataformas];
         newPlatforms.splice(index, 1);
@@ -131,16 +143,17 @@ useEffect(() => {
             plataformas: newPlatforms,
         });
     };
-
+    //Función para eliminar un  género de la lista
     const handleRemoveGenre = (index) => {
         const newGenres = [...input.genres];
         newGenres.splice(index, 1);
+       
         setInput({
             ...input,
             genres: newGenres,
         });
     };
-    
+    //Controlador de envio del formulario
     const handleSubmit  = async (e) => {
         const {value,name} = e.target
         e.preventDefault()
@@ -149,21 +162,22 @@ useEffect(() => {
             [name]: value
         })
         )
+        //Obtenemos un array con las claves del objeto  y verificamos si hay error 
         if (Object.keys(errors).length === 0) {
                 const formData = new FormData();
-                formData.append('nombre', input.nombre)
-                formData.append('descripcion', input.descripcion)
+                formData.append('nombre', input.nombre);
+                formData.append('descripcion', input.descripcion);
                 formData.append('plataformas', JSON.stringify(input.plataformas));
                 formData.append('genres', JSON.stringify(input.genres));
-                formData.append('fecha_de_lanzamiento', input.fecha_de_lanzamiento)
-                formData.append('rating', input.rating)
-                
-                formData.append('imagen', input.imagen)
-                console.log(formData.get('imagen'))
-                console.log(formData.get('genres'))
-            dispatch(postVideogames(formData))
-            console.log('formData2: ', input.plataformas,input.genres);
-            alert('Has creado un nuevo Videogame.',)
+                formData.append('fecha_de_lanzamiento', input.fecha_de_lanzamiento);
+                formData.append('rating', input.rating);
+                formData.append('imagen', input.imagen);
+                //console.log(formData.get('imagen'))
+
+            //Enviamos la solicitud al servidor 
+            dispatch(postVideogames(formData));
+            
+            alert('Has creado un nuevo Videogame.',);
             setInput({
                 nombre: '',
                 descripcion: '',
@@ -172,15 +186,16 @@ useEffect(() => {
                 rating: '',
                 genres: [],
                 imagen: null
-            })
-            navigate('/home')
+            });
+            navigate('/home');
                  
         } else {
-            alert('Completar los campos')
+            alert('Completar los campos');
+    };
+};
+    const orderPlatforms = platforms.sort((a,b) => a.name.localeCompare(b.name))
+    const orderGenres = genres.sort((a,b) => a.name.localeCompare(b.name))
     
-    }
-}
-
     return (
     <div className={styles.firstContainer}>
         <section>
@@ -227,9 +242,9 @@ useEffect(() => {
                   {errors.rating && <p className={styles.warning}>{errors.rating}</p>}
 
                  <p>Plataformas</p>
-                <select onChange={(e)=> handleSelectPlataforms(e)}>
+                <select onChange={(e)=> handleSelectPlatforms(e)}>
                     <option value='none'>none</option>
-                    {platforms.map((pf)=>(
+                    {orderPlatforms.map((pf)=>(
                         <option key={pf.id} value={pf.name}>
                             {pf.name}
                         </option>
@@ -252,7 +267,7 @@ useEffect(() => {
                   <p>Géneros</p>
                 <select onChange={(e) => handleSelectgenres(e)}>
                   <option value='none'>none</option>
-                    {genres.map((genre) => (
+                    {orderGenres.map((genre) => (
                         <option key={genre.id} value={genre.name}>
                             {genre.name}
                         </option>
@@ -263,7 +278,7 @@ useEffect(() => {
                     {input.genres.map((i, index) => (
                         <li key={index}>
                             {i}
-                            <button className={styles.buttonLi} type="button" onClick={() => handleRemoveGenre(index)}>
+                            <button type="button" onClick={() => handleRemoveGenre(index)}>
                                     x
                                 </button>
                         </li>
@@ -276,6 +291,6 @@ useEffect(() => {
 
     </div>
   )
-}
+};
 
-export default Create
+export default Create;

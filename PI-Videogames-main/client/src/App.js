@@ -12,20 +12,28 @@ import Footer from './Views/Footer/Footer';
 
 function App() {
 
+//UseLocation: representa la pag actual
   const location = useLocation()
+
+  //Estes variables de estados representan la pag actual 
   const [currentPage, setCurrentPage] = useState(1);
-    
-  const paginate = (pageNumber) => setCurrentPage(pageNumber)
+  
+  //Está función representará el numero de pagina actual
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   /*UTILIZAMOS APP UNICAMENTE PARA RENDERIZAR LAS RUTAS . 
   SEARCHBAR  NAVBAR DEBEN ESTAR SIEMPRE RENDERIZADAS, INDEPENDIENTEMENTE DE LA RUTA EN LA QUE ESTEMOS.
   DOS ELEMENTOS INDISPENSABLES EN LAS RUTAS: PATH Y ELEMENT
-  PATH: LA URL A LA QUE NOS REFERIMOS 
+  PATH: LA RUTA A LA QUE NOS REFERIMOS 
   ELEMENT: EL COMPONENTE QUE SE RENDERIZARÁ*/
   return (
     <div>
+      {/* Condicionamos el renderizado de NavBar y footer basado en la ruta actual
+         Solo se renderizará si la ruta actual no es la ruta raiz "/" */}
       {location.pathname !== '/' && 
       <NavBar page={setCurrentPage}/>
       }
+
     <Routes>
       
         <Route
@@ -48,9 +56,10 @@ function App() {
         element={<About/>}/>
 
     </Routes>
+
     {location.pathname !== '/' && <Footer/>}
     </div>
   );
-}
+};
 
 export default App;
