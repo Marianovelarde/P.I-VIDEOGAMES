@@ -2,6 +2,7 @@ const request = require('supertest');
 const app = require('../src/app');
 const { Videogame } = require('../src/db');
 
+//El método describe en Jest se utiliza para agrupar un conjunto de pruebas relacionadas. 
 describe('Endpoints de Videojuegos', () => {
   it('Obtener detalles de un videojuego por ID', async () => {
     const res = await request(app).get('/videogames/1');
@@ -28,7 +29,7 @@ describe('Endpoints de Plataformas', () => {
 
 
 describe('Videogame model', () => {
-
+//beforeEach es una función en Jest que se utiliza para ejecutar un bloque de código antes de cada prueba
   beforeEach(async () => {
     await Videogame.sync({ force: true });
   });

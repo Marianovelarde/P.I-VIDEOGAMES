@@ -50,7 +50,6 @@ const {API_KEY} = process.env;
       } else {
         /*
         obtener todos los videogames de la base de datos
-        
         */
         dataDb = await Videogame.findAll({
           include: Genres,
@@ -113,7 +112,6 @@ const {API_KEY} = process.env;
 const getVideogamesById = async (req, res) => {
 
     const { idVideogame } = req.params;
-
     //Solicitar información sobre un id en especifico para mostrar los detalles del videogame en cuestión.
 
   //verificamos si el ID es identificador unico universal 
@@ -124,7 +122,7 @@ const getVideogamesById = async (req, res) => {
             let dataDb = await Videogame.findByPk(idVideogame, {
                 include: Genres
             });
-              //formatea la informacion y la muestra
+              //formatea la informacion
             if (dataDb) {
                 return res.json({
                     id: dataDb.id,
@@ -140,15 +138,14 @@ const getVideogamesById = async (req, res) => {
                 return res.status(404).send('No se encuentra videogames con ese id');
             }
         } else {
-          //si no hay un id en la respuesta de la solicitud a de la base de datos entonces busco la info en la api
-          //end point para buscar por id
+          //si no hay un id en la respuesta de la solicitud a de la base de datos entonces hacemos la solicitud al end point para buscar por id
             const URL = `https://api.rawg.io/api/games/${idVideogame}?key=${API_KEY}`;
             
             //hago una peticion get a la url y extraigo la data
             const apiResponse = await axios.get(URL);
             const gameDetails = apiResponse.data;
 
-            // Extraer la información de detalles necesaria de la API
+            // Extraer la información de detalles necesarios de la API
             const response = {
                 id: gameDetails.id,
                 nombre: gameDetails.name,
@@ -167,7 +164,7 @@ const getVideogamesById = async (req, res) => {
       return res.status(500).send('Error interno en el servidor y la solicitud no pudo ser procesada: ');
     };
 };
-//Funcion para crear información: 
+//Funcion para crear videogame: 
 //recibimos datos  del cuerpo de la solicitud. 
 const createVideogame = async (req, res) => {
     const {
@@ -183,6 +180,12 @@ const createVideogame = async (req, res) => {
         
 
     try {
+      /*Verificar si el videogame ya existe en la base de datos*/
+      const existingVideogame = await Videogame.findOne({where: {nombre: nombre}})
+      if(existingVideogame) {
+        return res.status(400).send('Ya existe un videogame con ese nombre.')
+      }
+
       /*Creación de un nuevo VIDEOGAME, su relación y asociación de género en la base de datos.
       */
         let gameCreate = await Videogame.create({
@@ -193,6 +196,7 @@ const createVideogame = async (req, res) => {
             fecha_de_lanzamiento,
             rating,
         });
+        
       //si género tiene disponible un elemento entonces: 
       
         if (genres.length) {
