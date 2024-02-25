@@ -86,7 +86,7 @@ const {API_KEY} = process.env;
        });
       }
   
-      // concatenamos los datos de la base de datos y la API 
+     
       const allData = dataDb.concat(dataVideogamesApi);
   
        // Filtrar los resultados si se proporciona un nombre en la consulta.
@@ -174,7 +174,7 @@ const createVideogame = async (req, res) => {
         rating,
          } = req.body;
         const imagenURL  = req.file.filename; //extraer la url de la imagen 
-        //estos datos recibidos son convertidos(parse) de un cadena JSON a un objeto js
+        
         const plataformas = JSON.parse(req.body.plataformas);
         const genres = JSON.parse(req.body.genres);
         
@@ -205,7 +205,7 @@ const createVideogame = async (req, res) => {
             try {
               //Lo buscamos, si no se encuentra lo creamos.
               let genre = await Genres.findOrCreate({ where: { nombre: g } });
-              //Asociamos al juego creado el primer elemento(encontrado o asociado)
+              //Asociamos al juego creado el primer elemento(encontrado o creado)
               gameCreate.addGenres(genre[0]);
             } catch (error) {
               console.log('Error al asociar genero: ', error.message);
