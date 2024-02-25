@@ -15,10 +15,7 @@ const Pagination = ({ videogamesPerPage, totalVideogames, paginate, currentPage 
     return (
         
         <div className={styles.firstContainer}>
-               {/*
-            Renderizado botones de navegación para ir a la página anterior, a páginas individuales y a la página siguiente.
-            Los botones de navegación tienen eventos onClick que llaman a la función paginate() con el número de página correspondiente como argumento.
-            */}
+            
             <span>Página {currentPage} de {totalPages}</span>
             <br />
             <div  className={styles.buttonPag}>   
@@ -31,7 +28,7 @@ const Pagination = ({ videogamesPerPage, totalVideogames, paginate, currentPage 
                 </button>
             ))}
 
-            <button disabled={currentPage === totalPages} onClick={() => paginate(currentPage + 1)}>
+            <button disabled={totalPages === 0   || currentPage ===  totalPages } onClick={() => paginate(currentPage + 1)}>
                 {'Siguiente'}
             </button>
          

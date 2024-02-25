@@ -1,6 +1,6 @@
 
 //Importaciones: 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {connect} from 'react-redux';
 import { getAllVideogames, startLoading,stopLoading } from '../../Redux/actions';
 import Cards from '../../components/Cards/Cards';
@@ -10,26 +10,25 @@ import styles from './home.module.css';
 import loadingCar from '../../assets/police-car-82.gif';
 import imageNoResults from '../../assets/marvel.gif';
 
+
 const Home = (props) => {
 
-    //traigo el estado videogames con todos los elementos extraidos de la api
-    //loading: para esperar la respuesta de la información.
+  
   const {videogames, loading, currentPage, paginate, setCurrentPage} = props;
   
   
 
 
-//LIMITE DE VIDEOGAMES POR PAGINA: 15
-const [videogamesPerPage] = useState(15);
 
-//Se calcula el indice final por ejemplo: pagina 1 endIndex = 15. pagina 2 endIndex 30.
+const videogamesPerPage = 15;
+
+//Se calcula el indice final 
 const endIndex = currentPage * videogamesPerPage;
 
-// calcula el indice inicial por ejemplo endIndex(15) - videoGamesPerPage(15) = 0 (pag 1 = 0-15)
+// calcula el indice inicial
 const startIndex = endIndex - videogamesPerPage;
 
 /*
-    Selección de videogames actuales: 
     se utiliza el método slice para seleccionar un subconjunto de videogames de la lista completa de videogames
 
 */
@@ -39,6 +38,7 @@ const currentVideogames = videogames.slice(startIndex, endIndex)
 
  useEffect(()=>{
     props.getAllVideogames()
+    // eslint-disable-next-line
  },[]);
 
 
@@ -68,6 +68,7 @@ const currentVideogames = videogames.slice(startIndex, endIndex)
 
       
       <Cards videogames={currentVideogames}/>
+      
       {noResults && (
                     <div>
                         <div className={styles.noResults}>
@@ -83,6 +84,8 @@ const currentVideogames = videogames.slice(startIndex, endIndex)
       totalVideogames={videogames.length}
       paginate={paginate}
       />
+
+     
         </>
       )}
       

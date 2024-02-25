@@ -19,6 +19,7 @@ const {page} = props;
     
     useEffect(() => {
         props.getGenres();
+        // eslint-disable-next-line
     },[]);
 
     const handleFilterGender = (e) => {
@@ -28,7 +29,7 @@ const {page} = props;
             ...select,
             filterByGenres: value
         });
-        props.filterByGenresAndSource(value);
+        props.filterByGenresAndSource(value, select.filterBySource);
         page(1);
     };
     const handleSource = (e) => {

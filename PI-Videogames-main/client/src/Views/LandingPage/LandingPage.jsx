@@ -4,7 +4,7 @@ import styles from './landingPage.module.css'
 const LandingPage = () => {
   return (
     <div className={styles.firstContainer}>
-      <h1>Welcome To henry Videogame</h1>
+      <h1>Welcome To Henry Videogame</h1>
       <Link to='/home'>
         <button>Play</button>
       </Link>

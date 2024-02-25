@@ -4,8 +4,7 @@ import styles from './cards.module.css';
 const Cards = (props) => {
 
     const {videogames} = props
-//se recibe por props videogames (currentPage) 
-//mapeamos  videogames y luego retornamos una card por cada elemento con la información necesaria.
+
   return (
     <div className={styles.cardsContainer}>
         {videogames.map((vg) => {

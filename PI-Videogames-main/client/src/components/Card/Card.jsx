@@ -4,8 +4,8 @@ import styles from './card.module.css';
 const Card = (props) => {
 
 
-    //Extraemos los datos que nos llegan desde la lógica de cards
-    const { id, name, imagen, genres, rating } = props;
+   
+    const { id, name, imagen, genres } = props;
 
     /*
     Renderizamos en jsx lo que queremos mostrar

@@ -61,7 +61,7 @@
     font-size: 12px;
     display: flex;
     justify-content: center;
-    white-space: nowrap; /* Evita el Salto de línea*/
+    white-space: nowrap; 
     color:black;
     margin-top: 5px;
     font-family: 'Chakra Petch', sans-serif;

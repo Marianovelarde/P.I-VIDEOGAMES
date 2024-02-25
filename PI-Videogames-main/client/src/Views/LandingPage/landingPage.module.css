@@ -2,10 +2,10 @@
     background-image: url('../../assets/wallpaperLanding.gif');
     background-size: contain;
     height: 610px;
-    display: flex; /* Establecer como flexbox */
-    flex-direction: column; /* Alinear elementos en columna */
-    justify-content: center; /* Centrar verticalmente */
-    align-items: center; /* Centrar horizontalmente */
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
 }
 
 .firstContainer h1 {
@@ -33,5 +33,5 @@
 .firstContainer button:hover {
     background-color: #8a2be2; 
     color: #fff; 
-    box-shadow: 0 4px 8px rgba(148, 87, 235, 0.7); /* Ajusta la sombra al pasar el ratón */
+    box-shadow: 0 4px 8px rgba(148, 87, 235, 0.7); 
 }

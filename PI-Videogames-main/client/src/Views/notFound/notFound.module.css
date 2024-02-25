@@ -1,0 +1,20 @@
+.notFound {
+    text-align: center;
+    font-family: 'videogame2', sans-serif;
+    letter-spacing: 5px;
+    color:white;
+    text-shadow: 4px 4px 4px rgb(83, 30, 228);
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+}
+.notFound img {
+    margin-left: 310px;
+    margin-bottom: 10px;
+   align-items: center;
+    width: 700px;
+    height: 500px;
+    border: 1px solid black;
+    border-radius:  50%;
+}

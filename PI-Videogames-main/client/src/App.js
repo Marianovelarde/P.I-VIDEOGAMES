@@ -9,6 +9,7 @@ import NavBar from './Views/NavBar/NavBar';
 import Create from './Views/Form/Create';
 import About from './Views/About/About';
 import Footer from './Views/Footer/Footer';
+import NotFound from './Views/notFound/NotFound';
 
 function App() {
 
@@ -18,19 +19,16 @@ function App() {
   //Estes variables de estados representan la pag actual 
   const [currentPage, setCurrentPage] = useState(1);
   
-  //Está función representará el numero de pagina actual
+ 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  /*UTILIZAMOS APP UNICAMENTE PARA RENDERIZAR LAS RUTAS . 
-  SEARCHBAR  NAVBAR DEBEN ESTAR SIEMPRE RENDERIZADAS, INDEPENDIENTEMENTE DE LA RUTA EN LA QUE ESTEMOS.
-  DOS ELEMENTOS INDISPENSABLES EN LAS RUTAS: PATH Y ELEMENT
-  PATH: LA RUTA A LA QUE NOS REFERIMOS 
-  ELEMENT: EL COMPONENTE QUE SE RENDERIZARÁ*/
+  /*
+      UTILIZAMOS APP  PARA RENDERIZAR LAS RUTAS . 
+  */
   return (
     <div>
-      {/* Condicionamos el renderizado de NavBar y footer basado en la ruta actual
-         Solo se renderizará si la ruta actual no es la ruta raiz "/" */}
-      {location.pathname !== '/' && 
+     
+      {location.pathname !== '/'  &&
       <NavBar page={setCurrentPage}/>
       }
 
@@ -54,7 +52,7 @@ function App() {
         <Route
         path='/about'
         element={<About/>}/>
-
+      <Route path='*' element={<NotFound />} /> 
     </Routes>
 
     {location.pathname !== '/' && <Footer/>}

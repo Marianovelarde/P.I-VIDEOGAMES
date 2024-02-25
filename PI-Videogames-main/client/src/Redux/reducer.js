@@ -36,14 +36,14 @@ const rootReducer =  (state = initialState, action)  => {
         case GET_VIDEOGAMES_BY_NAME: 
         return {
             ...state,
-            videogames: action.payload,
-            copyVideogames: action.payload
+            copyVideogames: action.payload,
+            videogames: action.payload
         };
 
         case GET_VIDEOGAMES_BY_ID: 
         return {
             ...state,
-            details: action.payload
+            details: action.payload,
         };
 
         case GET_ALL_GENRES: 
@@ -88,6 +88,7 @@ const rootReducer =  (state = initialState, action)  => {
             case FILTER_BY_GENRES_AND_SOURCE:
                 const allVideogames = state.copyVideogames;
                 const { selectedGenre, selectedSource } = action.payload;
+                console.log(selectedSource);
                 const filteredVideogames =
                     selectedGenre === 'all'
                         ? allVideogames
@@ -131,7 +132,7 @@ const rootReducer =  (state = initialState, action)  => {
                 }
                 
             default:
-                // No se especifica un tipo de orden, devolver el estado actual
+                
                 return  state
         }
         return {

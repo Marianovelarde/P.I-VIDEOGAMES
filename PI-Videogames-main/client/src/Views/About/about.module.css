@@ -1,7 +1,16 @@
 .about {
+   font-family: 'Chakra Petch', sans-serif;
     display: flex;
     text-align: center;
     color: white;
     flex-direction: column;
     height: 800px;
+}
+.about img {
+    display: flex;
+    margin-left: 400px;
+    width: 500px;
+    height: 300px;
+    border: 1px solid black;
+    border-radius: 50px;
 }

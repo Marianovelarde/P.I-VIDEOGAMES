@@ -13,7 +13,7 @@
     margin-top: 5px;
     background-color: peru;
     transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 4px rgba(148, 87, 235, 0.5); /* Cambia el color de la sombra a violeta */
+    box-shadow: 0 2px 4px rgba(148, 87, 235, 0.5); 
     height: 25px;
     border: 1px solid black;
     border-radius: 10px; 
@@ -21,7 +21,7 @@
 .formContainer button:hover {
     background-color: #b68e0b; 
     color: #fff; 
-    box-shadow: 0 4px 8px rgba(181, 149, 226, 0.7); /* Ajusta la sombra al pasar el ratón */
+    box-shadow: 0 4px 8px rgba(181, 149, 226, 0.7); 
     cursor: pointer;
 
 }
@@ -29,6 +29,10 @@
     background-color: rgba(27, 20, 10, 0.4);
     border: 1px solid black;
     border-radius: 5px;
+}
+.formContainer textarea {
+    width: 300px;
+    height: 100px;
 }
 .formContainer textarea:hover {
     background-color: peru;

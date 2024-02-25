@@ -14,6 +14,9 @@ const validate = (input) => {
     if(!input.nombre) {
       errors.nombre = 'El nombre es requerido';
     };
+    if(!input.imagen) {
+        errors.imagen = 'La imagen es obligatoria'
+    };
   
     if(!input.descripcion) {
       errors.descripcion = 'La descripción es requerida'; 
@@ -23,8 +26,8 @@ const validate = (input) => {
       errors.fecha_de_lanzamiento = 'La fecha de lanzamiento es requerida';
     };
   
-    if(input.rating <= 0 || input.rating > 10) {
-      errors.rating = 'El rating es requerido (1 Min - Max 10)';
+    if(input.rating <= 0 || input.rating > 5) {
+      errors.rating = 'La clasificacion es requerida (1 Min - Max 5)';
     };
   
     if(input.plataformas.length === 0) {
@@ -51,7 +54,7 @@ const Create = () => {
     //traemos el estado genres y platforms
     const genres = useSelector((state) => state.genres);
     const platforms = useSelector((state) => state.platforms);
-    
+    const videogames = useSelector((state) => state.videogames);
     //variables de estado
     const [input, setInput] = useState({
     nombre: '',
@@ -65,7 +68,10 @@ const Create = () => {
 
     //Variables de estado para errores
     const [errors, setErrors] = useState({});
+    // eslint-disable-next-line
+    const [duplicateVideoG , setDuplicateVideoG] = useState(false) 
     
+
     //Controlador de cambio para la imagen
     const handleImagenChange = (e) => {
         const file = e.target.files[0];
@@ -76,10 +82,11 @@ const Create = () => {
        
     };
     
-    //Realizamos un efecto secundario para mostrar la lista de genres y platform y enviar accion al store
+
 useEffect(()=>{
     dispatch(getGenres())
     dispatch(getPlatforms())
+    // eslint-disable-next-line
 }, [input.plataformas, input.genres]);
 
 //ejecuta la función validate(input) cada vez que el estado input cambia.
@@ -174,6 +181,13 @@ useEffect(() => {
                 formData.append('imagen', input.imagen);
                 //console.log(formData.get('imagen'))
 
+            //Verificar si el nombre del videogame ya existe
+            const existingVideogame = videogames.find((game) => game.name === input.nombre)
+            if(existingVideogame) {
+                setDuplicateVideoG(true)
+                alert('Ya existe un videogame con ese nombre.')
+                return;
+            };
             //Enviamos la solicitud al servidor 
             dispatch(postVideogames(formData));
             
@@ -214,6 +228,7 @@ useEffect(() => {
                  
                  <p>Imagen</p>
                  <input type="file" name='imagen' onChange={e => handleImagenChange(e)}/>
+                 {errors.imagen && <p className={styles.warning}>{errors.imagen}</p>}
 
                  <p>Descripcion</p>
                  <textarea

@@ -1,7 +1,8 @@
 //Hacemos las importaciones correspondientes
+
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getVideogamesById, deleteVideogame } from '../../Redux/actions';
 import cargador from '../../assets/police-car-82.gif';
 import styles from './details.module.css';
@@ -22,6 +23,7 @@ const Details = (props) => {
 
   useEffect(() => {
     getVideogamesById(id);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -37,14 +39,19 @@ const Details = (props) => {
 
   //Controlador para borrar videogame
   const handleDelete = async () => {
+    const confirmDelete = window.confirm('¿Estás seguro que deseas eliminar el videogame?');
+    if(confirmDelete) { 
     try {
+
       await deleteVideogame(id);
       alert('Videogame eliminado con éxito.')
       navigate('/home');
     } catch (error) {
-      console.error('Error al eliminar el videojuego:', error);
-    }
+      console.error('Error al eliminar el videojuego:', error.message);
+    };
   };
+  };
+
   const createMarkup = () => {
     return { __html: descripcion };
 };
@@ -67,7 +74,7 @@ En los elementos jsx tenemos 3 cuestiones particulares
         <>
           <h1>{nombre}</h1>
 
-          {details &&  imagen && imagen.includes('https') ? (
+          {imagen && imagen.includes('https') ? (
            <img className={styles.imgDetail} src={imagen} alt={nombre} />
           ) : (
             <img className={styles.imgDetail} src={`http://localhost:3001/uploads/${imagen}`} alt={nombre} />)}
@@ -87,7 +94,7 @@ En los elementos jsx tenemos 3 cuestiones particulares
           {isUuid && (
             <>
              <button className={styles.buttonDetails} onClick={handleDelete}>Eliminar</button>
-              {/* Agrega más campos de actualización según sea necesario */}
+              
 
               
             </>

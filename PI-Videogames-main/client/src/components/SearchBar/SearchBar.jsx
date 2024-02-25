@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { getVideogamesByName, } from '../../Redux/actions'
-import styles from './searchBar.module.css'
+import React, {  useState } from 'react';
+import { getVideogamesByName, } from '../../Redux/actions';
+import styles from './searchBar.module.css';
 import { connect } from 'react-redux'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router';
 
 
 
 const SearchBar = (props) => {
     
     //navigate para dirigirnos hacía home
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     //estado local para obtener el valor del input
-    const [name, setName] = useState('')
+    const [name, setName] = useState('');
 
     
 //controlador de cambio: 
@@ -21,7 +21,7 @@ const SearchBar = (props) => {
         const {value} = e.target
         setName(value)
 
-    }
+    };
     //Controlador de envio
 
     const handleSubmit = (e) => {
@@ -30,7 +30,7 @@ const SearchBar = (props) => {
         setName('')
         navigate('/home')
       
-    }
+    };
     
 
     return (
@@ -43,6 +43,7 @@ const SearchBar = (props) => {
                 placeholder='Search Videogame'
                 value={name}
                 onChange={handleChange} />
+                
                 <button className={styles.buttonIcon} type='submit'><i className="fa-solid fa-magnifying-glass"></i></button>
                 
             </form>
